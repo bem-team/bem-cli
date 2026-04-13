@@ -5,7 +5,7 @@ package cmd
 import (
 	"testing"
 
-	"github.com/stainless-sdks/bem-cli/internal/mocktest"
+	"github.com/bem-team/bem-cli/internal/mocktest"
 )
 
 func TestInferSchemaCreate(t *testing.T) {
