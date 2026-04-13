@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/bem-team/bem-cli/internal/apiquery"
+	"github.com/bem-team/bem-cli/internal/requestflag"
 	"github.com/bem-team/bem-go-sdk"
 	"github.com/bem-team/bem-go-sdk/option"
-	"github.com/stainless-sdks/bem-cli/internal/apiquery"
-	"github.com/stainless-sdks/bem-cli/internal/requestflag"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )

@@ -16,8 +16,8 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/bem-team/bem-cli/internal/jsonview"
 	"github.com/bem-team/bem-go-sdk/option"
-	"github.com/stainless-sdks/bem-cli/internal/jsonview"
 
 	"github.com/charmbracelet/x/term"
 	"github.com/itchyny/json2yaml"
