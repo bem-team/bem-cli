@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-04-14)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/bem-team/bem-cli/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* add CLAUDE.md file to clarify CLI usage and gotchas ([4b5b42f](https://github.com/bem-team/bem-cli/commit/4b5b42f38f5522263c3f522e7121ea1eccb44345))
+
 ## 0.1.0 (2026-04-14)
 
 Full Changelog: [v0.0.2...v0.1.0](https://github.com/bem-team/bem-cli/compare/v0.0.2...v0.1.0)
