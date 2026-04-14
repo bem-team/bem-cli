@@ -12,8 +12,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/stainless-sdks/bem-cli/internal/autocomplete"
-	"github.com/stainless-sdks/bem-cli/internal/requestflag"
+	"github.com/bem-team/bem-cli/internal/autocomplete"
+	"github.com/bem-team/bem-cli/internal/requestflag"
 	docs "github.com/urfave/cli-docs/v3"
 	"github.com/urfave/cli/v3"
 )

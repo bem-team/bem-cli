@@ -5,8 +5,8 @@ package cmd
 import (
 	"testing"
 
-	"github.com/stainless-sdks/bem-cli/internal/mocktest"
-	"github.com/stainless-sdks/bem-cli/internal/requestflag"
+	"github.com/bem-team/bem-cli/internal/mocktest"
+	"github.com/bem-team/bem-cli/internal/requestflag"
 )
 
 func TestFunctionsCreate(t *testing.T) {

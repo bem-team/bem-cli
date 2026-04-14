@@ -1,4 +1,4 @@
-module github.com/stainless-sdks/bem-cli
+module github.com/bem-team/bem-cli
 
 go 1.25
 

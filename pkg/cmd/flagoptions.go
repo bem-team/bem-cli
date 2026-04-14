@@ -14,11 +14,11 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/bem-team/bem-cli/internal/apiform"
+	"github.com/bem-team/bem-cli/internal/apiquery"
+	"github.com/bem-team/bem-cli/internal/debugmiddleware"
+	"github.com/bem-team/bem-cli/internal/requestflag"
 	"github.com/bem-team/bem-go-sdk/option"
-	"github.com/stainless-sdks/bem-cli/internal/apiform"
-	"github.com/stainless-sdks/bem-cli/internal/apiquery"
-	"github.com/stainless-sdks/bem-cli/internal/debugmiddleware"
-	"github.com/stainless-sdks/bem-cli/internal/requestflag"
 
 	"github.com/goccy/go-yaml"
 	"github.com/urfave/cli/v3"

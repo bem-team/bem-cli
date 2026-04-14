@@ -10,8 +10,8 @@ import (
 	"os"
 	"slices"
 
+	"github.com/bem-team/bem-cli/pkg/cmd"
 	"github.com/bem-team/bem-go-sdk"
-	"github.com/stainless-sdks/bem-cli/pkg/cmd"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
