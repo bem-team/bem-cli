@@ -254,13 +254,13 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "input",
-			Usage:    "Input to the workflow call. Provide exactly one of `singleFile` or `batchFiles`.",
+			Usage:    "Input file(s) for a call. Provide exactly one of `singleFile` or `batchFiles`.\n\nIn the CLI, use the nested flags `--input.single-file` or `--input.batch-files`\nwith `@path/to/file` for automatic file embedding:\n`--input.single-file '{\"inputContent\": \"@invoice.pdf\", \"inputType\": \"pdf\"}' --wait`",
 			Required: true,
 			BodyPath: "input",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "wait",
-			Usage:     "When `true`, the endpoint blocks until the call completes (up to 30 seconds)\nand returns the finished call object. Default: `false`.",
+			Usage:     "Block until the call completes (up to 30 seconds) and return the finished\ncall object. Default: `false`. This is a boolean flag — use `--wait` or\n`--wait=true`, not `--wait true`.",
 			QueryPath: "wait",
 		},
 		&requestflag.Flag[string]{
@@ -275,11 +275,12 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 	"input": {
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "input.batch-files",
+			Usage:      "Multiple files to process in one call. Each item in the `inputs` array has its own `inputContent` and `inputType`.",
 			InnerField: "batchFiles",
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "input.single-file",
-			Usage:      "A single file input with base64-encoded content.\n\nWhen using the Bem CLI, use `@path/to/file` in the `inputContent` field to\nautomatically read and base64-encode the file:\n`--input.single-file '{\"inputContent\": \"@file.pdf\", \"inputType\": \"pdf\"}'`",
+			Usage:      "A single file input with base64-encoded content.\n\nWhen using the Bem CLI, use `@path/to/file` in the `inputContent` field to\nautomatically read and base64-encode the file:\n`--input.single-file '{\"inputContent\": \"@file.pdf\", \"inputType\": \"pdf\"}' --wait`",
 			InnerField: "singleFile",
 		},
 	},
