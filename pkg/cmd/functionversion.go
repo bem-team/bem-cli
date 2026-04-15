@@ -87,8 +87,9 @@ func handleFunctionsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "functions:versions retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "functions:versions retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
@@ -122,6 +123,7 @@ func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "functions:versions list", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "functions:versions list", obj, format, explicitFormat, transform)
 }
