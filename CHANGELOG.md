@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.0 (2026-04-15)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/bem-team/bem-cli/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* **api:** api update ([9405543](https://github.com/bem-team/bem-cli/commit/9405543848d8e75e5c19e081e7672ed8b462b60c))
+* **cli:** alias parameters in data with `x-stainless-cli-data-alias` ([57dba2a](https://github.com/bem-team/bem-cli/commit/57dba2a0127481e6a805e975ae557a8f74d937bd))
+
+
+### Chores
+
+* **cli:** fall back to JSON when using default "explore" with non-TTY ([a7748b7](https://github.com/bem-team/bem-cli/commit/a7748b770240578508d5c25b817bede3683e33f3))
+
 ## 0.4.0 (2026-04-15)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/bem-team/bem-cli/compare/v0.3.0...v0.4.0)

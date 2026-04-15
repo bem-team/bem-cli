@@ -475,8 +475,9 @@ func handleFunctionsCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "functions create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "functions create", obj, format, explicitFormat, transform)
 }
 
 func handleFunctionsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -510,8 +511,9 @@ func handleFunctionsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "functions retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "functions retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -552,8 +554,9 @@ func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "functions update", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "functions update", obj, format, explicitFormat, transform)
 }
 
 func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
@@ -578,6 +581,7 @@ func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -587,14 +591,14 @@ func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "functions list", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "functions list", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Functions.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "functions list", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "functions list", iter, format, explicitFormat, transform, maxItems)
 	}
 }
 

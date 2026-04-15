@@ -254,13 +254,13 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "input",
-			Usage:    "Input to the workflow call. Provide exactly one of `singleFile` or `batchFiles`.",
+			Usage:    "Input file(s) for a call. Provide exactly one of `singleFile` or `batchFiles`.\n\nIn the CLI, use the nested flags `--input.single-file` or `--input.batch-files`\nwith `@path/to/file` for automatic file embedding:\n`--input.single-file '{\"inputContent\": \"@invoice.pdf\", \"inputType\": \"pdf\"}' --wait`",
 			Required: true,
 			BodyPath: "input",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "wait",
-			Usage:     "When `true`, the endpoint blocks until the call completes (up to 30 seconds)\nand returns the finished call object. Default: `false`.",
+			Usage:     "Block until the call completes (up to 30 seconds) and return the finished\ncall object. Default: `false`. This is a boolean flag — use `--wait` or\n`--wait=true`, not `--wait true`.",
 			QueryPath: "wait",
 		},
 		&requestflag.Flag[string]{
@@ -275,11 +275,12 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 	"input": {
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "input.batch-files",
+			Usage:      "Multiple files to process in one call. Each item in the `inputs` array has its own `inputContent` and `inputType`.",
 			InnerField: "batchFiles",
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "input.single-file",
-			Usage:      "A single file input with base64-encoded content.\n\nWhen using the Bem CLI, use `@path/to/file` in the `inputContent` field to\nautomatically read and base64-encode the file:\n`--input.single-file '{\"inputContent\": \"@file.pdf\", \"inputType\": \"pdf\"}'`",
+			Usage:      "A single file input with base64-encoded content.\n\nWhen using the Bem CLI, use `@path/to/file` in the `inputContent` field to\nautomatically read and base64-encode the file:\n`--input.single-file '{\"inputContent\": \"@file.pdf\", \"inputType\": \"pdf\"}' --wait`",
 			InnerField: "singleFile",
 		},
 	},
@@ -357,8 +358,9 @@ func handleWorkflowsCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workflows create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workflows create", obj, format, explicitFormat, transform)
 }
 
 func handleWorkflowsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -392,8 +394,9 @@ func handleWorkflowsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workflows retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workflows retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleWorkflowsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -434,8 +437,9 @@ func handleWorkflowsUpdate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workflows update", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workflows update", obj, format, explicitFormat, transform)
 }
 
 func handleWorkflowsList(ctx context.Context, cmd *cli.Command) error {
@@ -460,6 +464,7 @@ func handleWorkflowsList(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -469,14 +474,14 @@ func handleWorkflowsList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "workflows list", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "workflows list", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Workflows.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "workflows list", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "workflows list", iter, format, explicitFormat, transform, maxItems)
 	}
 }
 
@@ -543,8 +548,9 @@ func handleWorkflowsCall(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workflows call", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workflows call", obj, format, explicitFormat, transform)
 }
 
 func handleWorkflowsCopy(ctx context.Context, cmd *cli.Command) error {
@@ -577,6 +583,7 @@ func handleWorkflowsCopy(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workflows copy", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workflows copy", obj, format, explicitFormat, transform)
 }
