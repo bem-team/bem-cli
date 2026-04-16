@@ -78,3 +78,19 @@ nfpms:
     contents:
       - src: man/man1/*.1.gz
         dst: /usr/share/man/man1/
+homebrew_casks:
+  - name: bem
+    repository:
+      owner: bem-team
+      name: homebrew-tools
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    homepage: https://bem.ai
+    description: The official CLI for bem.
+    license: Apache-2.0
+    binary: "bem"
+    completions:
+      bash: "completions/bem.bash"
+      zsh: "completions/bem.zsh"
+      fish: "completions/bem.fish"
+    manpages:
+    - man/man1/bem.1.gz
