@@ -267,6 +267,11 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Your reference ID for tracking this call.",
 			BodyPath: "callReferenceID",
 		},
+		&requestflag.Flag[any]{
+			Name:     "metadata",
+			Usage:    "Arbitrary JSON object attached to this call. Stored on the call record and injected\ninto `transformedContent` under the reserved `_metadata` key (alongside `referenceID`).\nMust be a JSON object. Maximum size: 4 KB.",
+			BodyPath: "metadata",
+		},
 	},
 	Action:          handleWorkflowsCall,
 	HideHelpCommand: true,

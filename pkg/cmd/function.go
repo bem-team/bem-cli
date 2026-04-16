@@ -61,6 +61,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Whether bounding box extraction is enabled. Only applicable to analyze and extract functions.\nWhen true, the function returns the document regions (page, coordinates) from which each\nfield was extracted. Enabling this automatically configures the function to use the bounding\nbox model. Disabling resets to the default.",
 			BodyPath: "enableBoundingBoxes",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "pre-count",
+			Usage:    "Reducing the risk of the model stopping early on long documents.\nTrade-off: Increases total latency. Compatible with\n`enableBoundingBoxes`.",
+			BodyPath: "preCount",
+		},
 		&requestflag.Flag[string]{
 			Name:     "description",
 			Usage:    "Description of router. Can be used to provide additional context on router's purpose and expected inputs.",
@@ -251,6 +256,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "enable-bounding-boxes",
 			Usage:    "Whether bounding box extraction is enabled. Only applicable to analyze and extract functions.\nWhen true, the function returns the document regions (page, coordinates) from which each\nfield was extracted. Enabling this automatically configures the function to use the bounding\nbox model. Disabling resets to the default.",
 			BodyPath: "enableBoundingBoxes",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "pre-count",
+			Usage:    "Reducing the risk of the model stopping early on long documents.\nTrade-off: Increases total latency. Compatible with\n`enableBoundingBoxes`.",
+			BodyPath: "preCount",
 		},
 		&requestflag.Flag[string]{
 			Name:     "description",

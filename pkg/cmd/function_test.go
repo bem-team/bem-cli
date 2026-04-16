@@ -24,6 +24,7 @@ func TestFunctionsCreate(t *testing.T) {
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
 			"--enable-bounding-boxes=true",
+			"--pre-count=true",
 			"--description", "description",
 			"--route", "{name: name, description: description, functionID: functionID, functionName: functionName, isErrorFallback: true, origin: {email: {patterns: [string]}}, regex: {patterns: [string]}}",
 			"--destination-type", "webhook",
@@ -58,6 +59,7 @@ func TestFunctionsCreate(t *testing.T) {
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
 			"--enable-bounding-boxes=true",
+			"--pre-count=true",
 			"--description", "description",
 			"--route.name", "name",
 			"--route.description", "description",
@@ -94,6 +96,7 @@ func TestFunctionsCreate(t *testing.T) {
 			"tags:\n" +
 			"  - string\n" +
 			"enableBoundingBoxes: true\n" +
+			"preCount: true\n" +
 			"description: description\n" +
 			"routes:\n" +
 			"  - name: name\n" +
@@ -172,6 +175,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
 			"--enable-bounding-boxes=true",
+			"--pre-count=true",
 			"--description", "description",
 			"--route", "{name: name, description: description, functionID: functionID, functionName: functionName, isErrorFallback: true, origin: {email: {patterns: [string]}}, regex: {patterns: [string]}}",
 			"--destination-type", "webhook",
@@ -207,6 +211,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
 			"--enable-bounding-boxes=true",
+			"--pre-count=true",
 			"--description", "description",
 			"--route.name", "name",
 			"--route.description", "description",
@@ -243,6 +248,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"tags:\n" +
 			"  - string\n" +
 			"enableBoundingBoxes: true\n" +
+			"preCount: true\n" +
 			"description: description\n" +
 			"routes:\n" +
 			"  - name: name\n" +
