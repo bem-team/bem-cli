@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/bem-team/bem-cli/internal/apiquery"
 	"github.com/bem-team/bem-cli/internal/requestflag"
@@ -84,5 +83,10 @@ func handleFunctionsCopyCreate(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "functions:copy create", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "functions:copy create",
+		Transform:      transform,
+	})
 }

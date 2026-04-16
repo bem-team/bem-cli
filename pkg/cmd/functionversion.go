@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/bem-team/bem-cli/internal/apiquery"
 	"github.com/bem-team/bem-cli/internal/requestflag"
@@ -89,7 +88,12 @@ func handleFunctionsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "functions:versions retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "functions:versions retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
@@ -125,5 +129,10 @@ func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "functions:versions list", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "functions:versions list",
+		Transform:      transform,
+	})
 }
