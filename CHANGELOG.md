@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0 (2026-04-16)
+
+Full Changelog: [v0.5.0...v0.6.0](https://github.com/bem-team/bem-cli/compare/v0.5.0...v0.6.0)
+
+### Features
+
+* **api:** api update ([da08f67](https://github.com/bem-team/bem-cli/commit/da08f67ce79d945f8f638801cb12ec21fe0eb0f2))
+* **api:** CLI homebrew publishing ([f0b7df5](https://github.com/bem-team/bem-cli/commit/f0b7df565e3359f774a94aa5cd98bcf9fa2928c5))
+
 ## 0.5.0 (2026-04-15)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/bem-team/bem-cli/compare/v0.4.0...v0.5.0)
