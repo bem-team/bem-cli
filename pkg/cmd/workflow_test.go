@@ -195,6 +195,7 @@ func TestWorkflowsCall(t *testing.T) {
 			"--input", "{batchFiles: {inputs: [{inputContent: inputContent, inputType: csv, itemReferenceID: itemReferenceID}]}, singleFile: {inputContent: inputContent, inputType: csv}}",
 			"--wait=true",
 			"--call-reference-id", "callReferenceID",
+			"--metadata", "{}",
 		)
 	})
 
@@ -212,6 +213,7 @@ func TestWorkflowsCall(t *testing.T) {
 			"--input.single-file", "{inputContent: inputContent, inputType: csv}",
 			"--wait=true",
 			"--call-reference-id", "callReferenceID",
+			"--metadata", "{}",
 		)
 	})
 
@@ -227,7 +229,8 @@ func TestWorkflowsCall(t *testing.T) {
 			"  singleFile:\n" +
 			"    inputContent: inputContent\n" +
 			"    inputType: csv\n" +
-			"callReferenceID: callReferenceID\n")
+			"callReferenceID: callReferenceID\n" +
+			"metadata: {}\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
