@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/bem-team/bem-cli/internal/apiquery"
 	"github.com/bem-team/bem-cli/internal/requestflag"
@@ -61,6 +60,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "enable-bounding-boxes",
 			Usage:    "Whether bounding box extraction is enabled. Only applicable to analyze and extract functions.\nWhen true, the function returns the document regions (page, coordinates) from which each\nfield was extracted. Enabling this automatically configures the function to use the bounding\nbox model. Disabling resets to the default.",
 			BodyPath: "enableBoundingBoxes",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "pre-count",
+			Usage:    "Reducing the risk of the model stopping early on long documents.\nTrade-off: Increases total latency. Compatible with\n`enableBoundingBoxes`.",
+			BodyPath: "preCount",
 		},
 		&requestflag.Flag[string]{
 			Name:     "description",
@@ -252,6 +256,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "enable-bounding-boxes",
 			Usage:    "Whether bounding box extraction is enabled. Only applicable to analyze and extract functions.\nWhen true, the function returns the document regions (page, coordinates) from which each\nfield was extracted. Enabling this automatically configures the function to use the bounding\nbox model. Disabling resets to the default.",
 			BodyPath: "enableBoundingBoxes",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "pre-count",
+			Usage:    "Reducing the risk of the model stopping early on long documents.\nTrade-off: Increases total latency. Compatible with\n`enableBoundingBoxes`.",
+			BodyPath: "preCount",
 		},
 		&requestflag.Flag[string]{
 			Name:     "description",
@@ -487,7 +496,13 @@ func handleFunctionsCreate(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "functions create", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "functions create",
+		Transform:      transform,
+	})
 }
 
 func handleFunctionsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -523,7 +538,13 @@ func handleFunctionsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "functions retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "functions retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -566,7 +587,13 @@ func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "functions update", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "functions update",
+		Transform:      transform,
+	})
 }
 
 func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
@@ -601,14 +628,26 @@ func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, os.Stderr, "functions list", obj, format, explicitFormat, transform)
+		return ShowJSON(obj, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
+			Title:          "functions list",
+			Transform:      transform,
+		})
 	} else {
 		iter := client.Functions.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, os.Stderr, "functions list", iter, format, explicitFormat, transform, maxItems)
+		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
+			Title:          "functions list",
+			Transform:      transform,
+		})
 	}
 }
 

@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/bem-team/bem-cli/internal/apiquery"
 	"github.com/bem-team/bem-cli/internal/requestflag"
@@ -268,6 +267,11 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Your reference ID for tracking this call.",
 			BodyPath: "callReferenceID",
 		},
+		&requestflag.Flag[any]{
+			Name:     "metadata",
+			Usage:    "Arbitrary JSON object attached to this call. Stored on the call record and injected\ninto `transformedContent` under the reserved `_metadata` key (alongside `referenceID`).\nMust be a JSON object. Maximum size: 4 KB.",
+			BodyPath: "metadata",
+		},
 	},
 	Action:          handleWorkflowsCall,
 	HideHelpCommand: true,
@@ -360,7 +364,13 @@ func handleWorkflowsCreate(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "workflows create", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workflows create",
+		Transform:      transform,
+	})
 }
 
 func handleWorkflowsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -396,7 +406,13 @@ func handleWorkflowsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "workflows retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workflows retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleWorkflowsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -439,7 +455,13 @@ func handleWorkflowsUpdate(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "workflows update", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workflows update",
+		Transform:      transform,
+	})
 }
 
 func handleWorkflowsList(ctx context.Context, cmd *cli.Command) error {
@@ -474,14 +496,26 @@ func handleWorkflowsList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, os.Stderr, "workflows list", obj, format, explicitFormat, transform)
+		return ShowJSON(obj, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
+			Title:          "workflows list",
+			Transform:      transform,
+		})
 	} else {
 		iter := client.Workflows.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, os.Stderr, "workflows list", iter, format, explicitFormat, transform, maxItems)
+		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
+			Title:          "workflows list",
+			Transform:      transform,
+		})
 	}
 }
 
@@ -550,7 +584,13 @@ func handleWorkflowsCall(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "workflows call", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workflows call",
+		Transform:      transform,
+	})
 }
 
 func handleWorkflowsCopy(ctx context.Context, cmd *cli.Command) error {
@@ -585,5 +625,11 @@ func handleWorkflowsCopy(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "workflows copy", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workflows copy",
+		Transform:      transform,
+	})
 }

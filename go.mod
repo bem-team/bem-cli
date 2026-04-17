@@ -3,7 +3,7 @@ module github.com/bem-team/bem-cli
 go 1.25
 
 require (
-	github.com/bem-team/bem-go-sdk v0.3.0
+	github.com/bem-team/bem-go-sdk v0.5.0
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.6
 	github.com/charmbracelet/lipgloss v1.1.0
