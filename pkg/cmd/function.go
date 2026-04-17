@@ -499,6 +499,7 @@ func handleFunctionsCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "functions create",
 		Transform:      transform,
 	})
@@ -540,6 +541,7 @@ func handleFunctionsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "functions retrieve",
 		Transform:      transform,
 	})
@@ -588,6 +590,7 @@ func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "functions update",
 		Transform:      transform,
 	})
@@ -628,6 +631,7 @@ func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "functions list",
 			Transform:      transform,
 		})
@@ -640,6 +644,7 @@ func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "functions list",
 			Transform:      transform,
 		})
