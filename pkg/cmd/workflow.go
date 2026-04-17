@@ -37,6 +37,11 @@ var workflowsCreate = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "nodes",
 		},
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "connector",
+			Usage:    "Connectors to attach to the workflow at creation. If any entry fails to\nprovision, the entire workflow creation is rolled back.",
+			BodyPath: "connectors",
+		},
 		&requestflag.Flag[string]{
 			Name:     "display-name",
 			Usage:    "Human-readable display name.",
@@ -61,10 +66,37 @@ var workflowsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:       "node.function",
 			InnerField: "function",
 		},
+		&requestflag.InnerFlag[any]{
+			Name:       "node.metadata",
+			Usage:      "Opaque free-form JSON object attached to this node. Stored and returned\nverbatim; the server does not interpret it. Intended for client-side\nconcerns such as canvas display properties (position, color, collapsed\nstate, etc.).",
+			InnerField: "metadata",
+		},
 		&requestflag.InnerFlag[string]{
 			Name:       "node.name",
 			Usage:      "Name for this call site. Must be unique within the workflow version.\nDefaults to the function's own name when omitted.",
 			InnerField: "name",
+		},
+	},
+	"connector": {
+		&requestflag.InnerFlag[string]{
+			Name:       "connector.name",
+			Usage:      "Human-friendly connector name.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "connector.type",
+			Usage:      "Discriminator for a workflow connector. V3 supports `paragon` only.",
+			InnerField: "type",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "connector.connector-id",
+			Usage:      "Present → update. Absent → create.",
+			InnerField: "connectorID",
+		},
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "connector.paragon",
+			Usage:      "Request-side config block for a Paragon connector. Fields absent on update are unchanged.",
+			InnerField: "paragon",
 		},
 	},
 	"edge": {
@@ -82,6 +114,11 @@ var workflowsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:       "edge.destination-name",
 			Usage:      "Labelled outlet on the source node that activates this edge.\nOmit for the default (unlabelled) outlet.",
 			InnerField: "destinationName",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "edge.metadata",
+			Usage:      "Opaque free-form JSON object attached to this edge. Stored and returned\nverbatim; the server does not interpret it.",
+			InnerField: "metadata",
 		},
 	},
 })
@@ -108,6 +145,11 @@ var workflowsUpdate = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.Flag[string]{
 			Name:     "workflow-name",
 			Required: true,
+		},
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "connector",
+			Usage:    "Declarative, full-desired-state array of connectors. If omitted, existing\nconnectors are left unchanged. If provided, it replaces the current set:\nentries with `connectorID` are updates, entries without are creates, and\nexisting connectors whose `connectorID` is absent are deleted.",
+			BodyPath: "connectors",
 		},
 		&requestflag.Flag[string]{
 			Name:     "display-name",
@@ -141,6 +183,28 @@ var workflowsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleWorkflowsUpdate,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
+	"connector": {
+		&requestflag.InnerFlag[string]{
+			Name:       "connector.name",
+			Usage:      "Human-friendly connector name.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "connector.type",
+			Usage:      "Discriminator for a workflow connector. V3 supports `paragon` only.",
+			InnerField: "type",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "connector.connector-id",
+			Usage:      "Present → update. Absent → create.",
+			InnerField: "connectorID",
+		},
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "connector.paragon",
+			Usage:      "Request-side config block for a Paragon connector. Fields absent on update are unchanged.",
+			InnerField: "paragon",
+		},
+	},
 	"edge": {
 		&requestflag.InnerFlag[string]{
 			Name:       "edge.destination-node-name",
@@ -157,11 +221,21 @@ var workflowsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Labelled outlet on the source node that activates this edge.\nOmit for the default (unlabelled) outlet.",
 			InnerField: "destinationName",
 		},
+		&requestflag.InnerFlag[any]{
+			Name:       "edge.metadata",
+			Usage:      "Opaque free-form JSON object attached to this edge. Stored and returned\nverbatim; the server does not interpret it.",
+			InnerField: "metadata",
+		},
 	},
 	"node": {
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "node.function",
 			InnerField: "function",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "node.metadata",
+			Usage:      "Opaque free-form JSON object attached to this node. Stored and returned\nverbatim; the server does not interpret it. Intended for client-side\nconcerns such as canvas display properties (position, color, collapsed\nstate, etc.).",
+			InnerField: "metadata",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "node.name",
