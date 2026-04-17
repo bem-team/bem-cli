@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.7.0 (2026-04-17)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/bem-team/bem-cli/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* **api:** api update ([d04c082](https://github.com/bem-team/bem-cli/commit/d04c082b527095d393f18576e7db85ba72d7b1ff))
+* **cli:** add `--raw-output`/`-r` option to print raw (non-JSON) strings ([d4070e0](https://github.com/bem-team/bem-cli/commit/d4070e0f879b202e26a77dd8a07d8737a13fa694))
+* **cli:** send filename and content type when reading input from files ([17fd049](https://github.com/bem-team/bem-cli/commit/17fd049f61966280c5794ddf8b402b013affbb7d))
+
+
+### Chores
+
+* **ci:** support manually triggering release workflow ([4fc30ac](https://github.com/bem-team/bem-cli/commit/4fc30acbaa7044193296b7b0501fac29ef2623f8))
+* **cli:** switch long lists of positional args over to param structs ([e326062](https://github.com/bem-team/bem-cli/commit/e326062eb1904c91f1a470e16ab3eacd98d2f3ca))
+* **internal:** codegen related update ([95067ea](https://github.com/bem-team/bem-cli/commit/95067ea68456be509334cebf1dbd3d61225dd0fe))
+
 ## 0.6.0 (2026-04-16)
 
 Full Changelog: [v0.5.0...v0.6.0](https://github.com/bem-team/bem-cli/compare/v0.5.0...v0.6.0)
