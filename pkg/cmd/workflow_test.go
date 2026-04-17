@@ -18,9 +18,10 @@ func TestWorkflowsCreate(t *testing.T) {
 			"workflows", "create",
 			"--main-node-name", "mainNodeName",
 			"--name", "name",
-			"--node", "{function: {id: id, name: name, versionNum: 0}, name: name}",
+			"--node", "{function: {id: id, name: name, versionNum: 0}, metadata: {}, name: name}",
+			"--connector", "{name: name, type: paragon, connectorID: connectorID, paragon: {configuration: {}, integration: integration}}",
 			"--display-name", "displayName",
-			"--edge", "{destinationNodeName: destinationNodeName, sourceNodeName: sourceNodeName, destinationName: destinationName}",
+			"--edge", "{destinationNodeName: destinationNodeName, sourceNodeName: sourceNodeName, destinationName: destinationName, metadata: {}}",
 			"--tag", "string",
 		)
 	})
@@ -37,11 +38,17 @@ func TestWorkflowsCreate(t *testing.T) {
 			"--main-node-name", "mainNodeName",
 			"--name", "name",
 			"--node.function", "{id: id, name: name, versionNum: 0}",
+			"--node.metadata", "{}",
 			"--node.name", "name",
+			"--connector.name", "name",
+			"--connector.type", "paragon",
+			"--connector.connector-id", "connectorID",
+			"--connector.paragon", "{configuration: {}, integration: integration}",
 			"--display-name", "displayName",
 			"--edge.destination-node-name", "destinationNodeName",
 			"--edge.source-node-name", "sourceNodeName",
 			"--edge.destination-name", "destinationName",
+			"--edge.metadata", "{}",
 			"--tag", "string",
 		)
 	})
@@ -56,12 +63,21 @@ func TestWorkflowsCreate(t *testing.T) {
 			"      id: id\n" +
 			"      name: name\n" +
 			"      versionNum: 0\n" +
+			"    metadata: {}\n" +
 			"    name: name\n" +
+			"connectors:\n" +
+			"  - name: name\n" +
+			"    type: paragon\n" +
+			"    connectorID: connectorID\n" +
+			"    paragon:\n" +
+			"      configuration: {}\n" +
+			"      integration: integration\n" +
 			"displayName: displayName\n" +
 			"edges:\n" +
 			"  - destinationNodeName: destinationNodeName\n" +
 			"    sourceNodeName: sourceNodeName\n" +
 			"    destinationName: destinationName\n" +
+			"    metadata: {}\n" +
 			"tags:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
@@ -92,11 +108,12 @@ func TestWorkflowsUpdate(t *testing.T) {
 			"--api-key", "string",
 			"workflows", "update",
 			"--workflow-name", "workflowName",
+			"--connector", "{name: name, type: paragon, connectorID: connectorID, paragon: {configuration: {}, integration: integration}}",
 			"--display-name", "displayName",
-			"--edge", "{destinationNodeName: destinationNodeName, sourceNodeName: sourceNodeName, destinationName: destinationName}",
+			"--edge", "{destinationNodeName: destinationNodeName, sourceNodeName: sourceNodeName, destinationName: destinationName, metadata: {}}",
 			"--main-node-name", "mainNodeName",
 			"--name", "name",
-			"--node", "{function: {id: id, name: name, versionNum: 0}, name: name}",
+			"--node", "{function: {id: id, name: name, versionNum: 0}, metadata: {}, name: name}",
 			"--tag", "string",
 		)
 	})
@@ -111,13 +128,19 @@ func TestWorkflowsUpdate(t *testing.T) {
 			"--api-key", "string",
 			"workflows", "update",
 			"--workflow-name", "workflowName",
+			"--connector.name", "name",
+			"--connector.type", "paragon",
+			"--connector.connector-id", "connectorID",
+			"--connector.paragon", "{configuration: {}, integration: integration}",
 			"--display-name", "displayName",
 			"--edge.destination-node-name", "destinationNodeName",
 			"--edge.source-node-name", "sourceNodeName",
 			"--edge.destination-name", "destinationName",
+			"--edge.metadata", "{}",
 			"--main-node-name", "mainNodeName",
 			"--name", "name",
 			"--node.function", "{id: id, name: name, versionNum: 0}",
+			"--node.metadata", "{}",
 			"--node.name", "name",
 			"--tag", "string",
 		)
@@ -126,11 +149,19 @@ func TestWorkflowsUpdate(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
+			"connectors:\n" +
+			"  - name: name\n" +
+			"    type: paragon\n" +
+			"    connectorID: connectorID\n" +
+			"    paragon:\n" +
+			"      configuration: {}\n" +
+			"      integration: integration\n" +
 			"displayName: displayName\n" +
 			"edges:\n" +
 			"  - destinationNodeName: destinationNodeName\n" +
 			"    sourceNodeName: sourceNodeName\n" +
 			"    destinationName: destinationName\n" +
+			"    metadata: {}\n" +
 			"mainNodeName: mainNodeName\n" +
 			"name: name\n" +
 			"nodes:\n" +
@@ -138,6 +169,7 @@ func TestWorkflowsUpdate(t *testing.T) {
 			"      id: id\n" +
 			"      name: name\n" +
 			"      versionNum: 0\n" +
+			"    metadata: {}\n" +
 			"    name: name\n" +
 			"tags:\n" +
 			"  - string\n")
