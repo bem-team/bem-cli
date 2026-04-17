@@ -123,6 +123,7 @@ func handleCallsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "calls retrieve",
 		Transform:      transform,
 	})
@@ -163,6 +164,7 @@ func handleCallsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "calls list",
 			Transform:      transform,
 		})
@@ -175,6 +177,7 @@ func handleCallsList(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "calls list",
 			Transform:      transform,
 		})

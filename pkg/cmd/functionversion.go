@@ -91,6 +91,7 @@ func handleFunctionsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "functions:versions retrieve",
 		Transform:      transform,
 	})
@@ -132,6 +133,7 @@ func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "functions:versions list",
 		Transform:      transform,
 	})
