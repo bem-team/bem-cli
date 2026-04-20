@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.8.0 (2026-04-20)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/bem-team/bem-cli/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** api update ([fe65385](https://github.com/bem-team/bem-cli/commit/fe653854c19541b8496ab72b78ee6103be6afbc8))
+* **api:** api update ([0898fbc](https://github.com/bem-team/bem-cli/commit/0898fbcd0849811e78151d66fe85195ee1a0cab7))
+
+
+### Chores
+
+* **cli:** use `ShowJSONOpts` as argument to `formatJSON` instead of many positionals ([8824af4](https://github.com/bem-team/bem-cli/commit/8824af494332745bb55feac1405204ffdacb67f4))
+
 ## 0.7.0 (2026-04-17)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/bem-team/bem-cli/compare/v0.6.0...v0.7.0)
