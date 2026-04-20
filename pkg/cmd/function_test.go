@@ -17,16 +17,14 @@ func TestFunctionsCreate(t *testing.T) {
 			"--api-key", "string",
 			"functions", "create",
 			"--function-name", "functionName",
-			"--type", "transform",
+			"--type", "extract",
 			"--display-name", "displayName",
 			"--output-schema", "{}",
 			"--output-schema-name", "outputSchemaName",
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
-			"--enable-bounding-boxes=true",
-			"--pre-count=true",
+			"--classification", "{name: name, description: description, functionID: functionID, functionName: functionName, isErrorFallback: true, origin: {email: {patterns: [string]}}, regex: {patterns: [string]}}",
 			"--description", "description",
-			"--route", "{name: name, description: description, functionID: functionID, functionName: functionName, isErrorFallback: true, origin: {email: {patterns: [string]}}, regex: {patterns: [string]}}",
 			"--destination-type", "webhook",
 			"--google-drive-folder-id", "googleDriveFolderId",
 			"--s3-bucket", "s3Bucket",
@@ -52,22 +50,20 @@ func TestFunctionsCreate(t *testing.T) {
 			"--api-key", "string",
 			"functions", "create",
 			"--function-name", "functionName",
-			"--type", "transform",
+			"--type", "extract",
 			"--display-name", "displayName",
 			"--output-schema", "{}",
 			"--output-schema-name", "outputSchemaName",
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
-			"--enable-bounding-boxes=true",
-			"--pre-count=true",
+			"--classification.name", "name",
+			"--classification.description", "description",
+			"--classification.function-id", "functionID",
+			"--classification.function-name", "functionName",
+			"--classification.is-error-fallback=true",
+			"--classification.origin", "{email: {patterns: [string]}}",
+			"--classification.regex", "{patterns: [string]}",
 			"--description", "description",
-			"--route.name", "name",
-			"--route.description", "description",
-			"--route.function-id", "functionID",
-			"--route.function-name", "functionName",
-			"--route.is-error-fallback=true",
-			"--route.origin", "{email: {patterns: [string]}}",
-			"--route.regex", "{patterns: [string]}",
 			"--destination-type", "webhook",
 			"--google-drive-folder-id", "googleDriveFolderId",
 			"--s3-bucket", "s3Bucket",
@@ -88,17 +84,14 @@ func TestFunctionsCreate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"functionName: functionName\n" +
-			"type: transform\n" +
+			"type: extract\n" +
 			"displayName: displayName\n" +
 			"outputSchema: {}\n" +
 			"outputSchemaName: outputSchemaName\n" +
 			"tabularChunkingEnabled: true\n" +
 			"tags:\n" +
 			"  - string\n" +
-			"enableBoundingBoxes: true\n" +
-			"preCount: true\n" +
-			"description: description\n" +
-			"routes:\n" +
+			"classifications:\n" +
 			"  - name: name\n" +
 			"    description: description\n" +
 			"    functionID: functionID\n" +
@@ -111,6 +104,7 @@ func TestFunctionsCreate(t *testing.T) {
 			"    regex:\n" +
 			"      patterns:\n" +
 			"        - string\n" +
+			"description: description\n" +
 			"destinationType: webhook\n" +
 			"googleDriveFolderId: googleDriveFolderId\n" +
 			"s3Bucket: s3Bucket\n" +
@@ -167,17 +161,15 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--api-key", "string",
 			"functions", "update",
 			"--path-function-name", "functionName",
-			"--type", "transform",
+			"--type", "extract",
 			"--display-name", "displayName",
 			"--function-name", "functionName",
 			"--output-schema", "{}",
 			"--output-schema-name", "outputSchemaName",
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
-			"--enable-bounding-boxes=true",
-			"--pre-count=true",
+			"--classification", "{name: name, description: description, functionID: functionID, functionName: functionName, isErrorFallback: true, origin: {email: {patterns: [string]}}, regex: {patterns: [string]}}",
 			"--description", "description",
-			"--route", "{name: name, description: description, functionID: functionID, functionName: functionName, isErrorFallback: true, origin: {email: {patterns: [string]}}, regex: {patterns: [string]}}",
 			"--destination-type", "webhook",
 			"--google-drive-folder-id", "googleDriveFolderId",
 			"--s3-bucket", "s3Bucket",
@@ -203,23 +195,21 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--api-key", "string",
 			"functions", "update",
 			"--path-function-name", "functionName",
-			"--type", "transform",
+			"--type", "extract",
 			"--display-name", "displayName",
 			"--function-name", "functionName",
 			"--output-schema", "{}",
 			"--output-schema-name", "outputSchemaName",
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
-			"--enable-bounding-boxes=true",
-			"--pre-count=true",
+			"--classification.name", "name",
+			"--classification.description", "description",
+			"--classification.function-id", "functionID",
+			"--classification.function-name", "functionName",
+			"--classification.is-error-fallback=true",
+			"--classification.origin", "{email: {patterns: [string]}}",
+			"--classification.regex", "{patterns: [string]}",
 			"--description", "description",
-			"--route.name", "name",
-			"--route.description", "description",
-			"--route.function-id", "functionID",
-			"--route.function-name", "functionName",
-			"--route.is-error-fallback=true",
-			"--route.origin", "{email: {patterns: [string]}}",
-			"--route.regex", "{patterns: [string]}",
 			"--destination-type", "webhook",
 			"--google-drive-folder-id", "googleDriveFolderId",
 			"--s3-bucket", "s3Bucket",
@@ -239,7 +229,7 @@ func TestFunctionsUpdate(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
-			"type: transform\n" +
+			"type: extract\n" +
 			"displayName: displayName\n" +
 			"functionName: functionName\n" +
 			"outputSchema: {}\n" +
@@ -247,10 +237,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"tabularChunkingEnabled: true\n" +
 			"tags:\n" +
 			"  - string\n" +
-			"enableBoundingBoxes: true\n" +
-			"preCount: true\n" +
-			"description: description\n" +
-			"routes:\n" +
+			"classifications:\n" +
 			"  - name: name\n" +
 			"    description: description\n" +
 			"    functionID: functionID\n" +
@@ -263,6 +250,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"    regex:\n" +
 			"      patterns:\n" +
 			"        - string\n" +
+			"description: description\n" +
 			"destinationType: webhook\n" +
 			"googleDriveFolderId: googleDriveFolderId\n" +
 			"s3Bucket: s3Bucket\n" +
