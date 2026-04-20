@@ -27,7 +27,7 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
-			Usage:    `Allowed values: "transform".`,
+			Usage:    `Allowed values: "extract".`,
 			Required: true,
 			BodyPath: "type",
 		},
@@ -48,7 +48,7 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "tabular-chunking-enabled",
-			Usage:    "Whether tabular chunking is enabled on the pipeline. This processes tables in CSV/Excel in row batches, rather than all rows at once.",
+			Usage:    "Whether tabular chunking is enabled. When true, tables in CSV/Excel files are processed\nin row batches rather than all at once.",
 			BodyPath: "tabularChunkingEnabled",
 		},
 		&requestflag.Flag[[]string]{
@@ -56,25 +56,15 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Array of tags to categorize and organize functions.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[bool]{
-			Name:     "enable-bounding-boxes",
-			Usage:    "Whether bounding box extraction is enabled. Only applicable to analyze and extract functions.\nWhen true, the function returns the document regions (page, coordinates) from which each\nfield was extracted. Enabling this automatically configures the function to use the bounding\nbox model. Disabling resets to the default.",
-			BodyPath: "enableBoundingBoxes",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "pre-count",
-			Usage:    "Reducing the risk of the model stopping early on long documents.\nTrade-off: Increases total latency. Compatible with\n`enableBoundingBoxes`.",
-			BodyPath: "preCount",
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "classification",
+			Usage:    "V3 create/update variants of the shared function payloads.\n\nThe V3 Functions API no longer accepts the legacy `transform` or `analyze`\nfunction types when creating new functions or updating existing ones — both\nhave been unified under `extract`. Existing functions of those types remain\nreadable and callable via V3, so the V3 read-side unions still include\n`transform` and `analyze` variants.\n\nThe V3 API also renames the internal `route` function type to `classify` on\nthe wire, and the associated `routes` field to `classifications` (type\n`ClassificationList`). Platform-internal storage and processing still use\n`route` / `routes`; the rename is applied only at the V3 API boundary.V3-facing name for the list of classifications a classify function can produce.",
+			BodyPath: "classifications",
 		},
 		&requestflag.Flag[string]{
 			Name:     "description",
-			Usage:    "Description of router. Can be used to provide additional context on router's purpose and expected inputs.",
+			Usage:    "Description of classifier. Can be used to provide additional context on classifier's purpose and expected inputs.",
 			BodyPath: "description",
-		},
-		&requestflag.Flag[[]map[string]any]{
-			Name:     "route",
-			Usage:    "List of routes.",
-			BodyPath: "routes",
 		},
 		&requestflag.Flag[string]{
 			Name:     "destination-type",
@@ -138,33 +128,33 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleFunctionsCreate,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
-	"route": {
+	"classification": {
 		&requestflag.InnerFlag[string]{
-			Name:       "route.name",
+			Name:       "classification.name",
 			InnerField: "name",
 		},
 		&requestflag.InnerFlag[string]{
-			Name:       "route.description",
+			Name:       "classification.description",
 			InnerField: "description",
 		},
 		&requestflag.InnerFlag[string]{
-			Name:       "route.function-id",
+			Name:       "classification.function-id",
 			InnerField: "functionID",
 		},
 		&requestflag.InnerFlag[string]{
-			Name:       "route.function-name",
+			Name:       "classification.function-name",
 			InnerField: "functionName",
 		},
 		&requestflag.InnerFlag[bool]{
-			Name:       "route.is-error-fallback",
+			Name:       "classification.is-error-fallback",
 			InnerField: "isErrorFallback",
 		},
 		&requestflag.InnerFlag[map[string]any]{
-			Name:       "route.origin",
+			Name:       "classification.origin",
 			InnerField: "origin",
 		},
 		&requestflag.InnerFlag[map[string]any]{
-			Name:       "route.regex",
+			Name:       "classification.regex",
 			InnerField: "regex",
 		},
 	},
@@ -218,7 +208,7 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
-			Usage:    `Allowed values: "transform".`,
+			Usage:    `Allowed values: "extract".`,
 			Required: true,
 			BodyPath: "type",
 		},
@@ -244,7 +234,7 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "tabular-chunking-enabled",
-			Usage:    "Whether tabular chunking is enabled on the pipeline. This processes tables in CSV/Excel in row batches, rather than all rows at once.",
+			Usage:    "Whether tabular chunking is enabled. When true, tables in CSV/Excel files are processed\nin row batches rather than all at once.",
 			BodyPath: "tabularChunkingEnabled",
 		},
 		&requestflag.Flag[[]string]{
@@ -252,25 +242,15 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Array of tags to categorize and organize functions.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[bool]{
-			Name:     "enable-bounding-boxes",
-			Usage:    "Whether bounding box extraction is enabled. Only applicable to analyze and extract functions.\nWhen true, the function returns the document regions (page, coordinates) from which each\nfield was extracted. Enabling this automatically configures the function to use the bounding\nbox model. Disabling resets to the default.",
-			BodyPath: "enableBoundingBoxes",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "pre-count",
-			Usage:    "Reducing the risk of the model stopping early on long documents.\nTrade-off: Increases total latency. Compatible with\n`enableBoundingBoxes`.",
-			BodyPath: "preCount",
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "classification",
+			Usage:    "V3 create/update variants of the shared function payloads.\n\nThe V3 Functions API no longer accepts the legacy `transform` or `analyze`\nfunction types when creating new functions or updating existing ones — both\nhave been unified under `extract`. Existing functions of those types remain\nreadable and callable via V3, so the V3 read-side unions still include\n`transform` and `analyze` variants.\n\nThe V3 API also renames the internal `route` function type to `classify` on\nthe wire, and the associated `routes` field to `classifications` (type\n`ClassificationList`). Platform-internal storage and processing still use\n`route` / `routes`; the rename is applied only at the V3 API boundary.V3-facing name for the list of classifications a classify function can produce.",
+			BodyPath: "classifications",
 		},
 		&requestflag.Flag[string]{
 			Name:     "description",
-			Usage:    "Description of router. Can be used to provide additional context on router's purpose and expected inputs.",
+			Usage:    "Description of classifier. Can be used to provide additional context on classifier's purpose and expected inputs.",
 			BodyPath: "description",
-		},
-		&requestflag.Flag[[]map[string]any]{
-			Name:     "route",
-			Usage:    "List of routes.",
-			BodyPath: "routes",
 		},
 		&requestflag.Flag[string]{
 			Name:     "destination-type",
@@ -334,33 +314,33 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleFunctionsUpdate,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
-	"route": {
+	"classification": {
 		&requestflag.InnerFlag[string]{
-			Name:       "route.name",
+			Name:       "classification.name",
 			InnerField: "name",
 		},
 		&requestflag.InnerFlag[string]{
-			Name:       "route.description",
+			Name:       "classification.description",
 			InnerField: "description",
 		},
 		&requestflag.InnerFlag[string]{
-			Name:       "route.function-id",
+			Name:       "classification.function-id",
 			InnerField: "functionID",
 		},
 		&requestflag.InnerFlag[string]{
-			Name:       "route.function-name",
+			Name:       "classification.function-name",
 			InnerField: "functionName",
 		},
 		&requestflag.InnerFlag[bool]{
-			Name:       "route.is-error-fallback",
+			Name:       "classification.is-error-fallback",
 			InnerField: "isErrorFallback",
 		},
 		&requestflag.InnerFlag[map[string]any]{
-			Name:       "route.origin",
+			Name:       "classification.origin",
 			InnerField: "origin",
 		},
 		&requestflag.InnerFlag[map[string]any]{
-			Name:       "route.regex",
+			Name:       "classification.regex",
 			InnerField: "regex",
 		},
 	},
