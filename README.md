@@ -57,7 +57,7 @@ bem [resource] <command> [flags...]
 bem functions create \
   --api-key 'My API Key' \
   --function-name functionName \
-  --type transform
+  --type extract
 ```
 
 For details about specific commands, use the `--help` flag.
