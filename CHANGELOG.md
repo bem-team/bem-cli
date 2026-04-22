@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.1 (2026-04-22)
+
+Full Changelog: [v0.8.0...v0.8.1](https://github.com/bem-team/bem-cli/compare/v0.8.0...v0.8.1)
+
+### Chores
+
+* **internal:** codegen related update ([b2372fa](https://github.com/bem-team/bem-cli/commit/b2372fa58e3f87e6706e21dd8e763c2e10a09c8c))
+* **internal:** more robust bootstrap script ([a7bf3fe](https://github.com/bem-team/bem-cli/commit/a7bf3fe94c3bdd348abb37d52b57f39f0de675be))
+
 ## 0.8.0 (2026-04-20)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/bem-team/bem-cli/compare/v0.7.0...v0.8.0)
