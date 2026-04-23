@@ -87,6 +87,20 @@ var callsList = cli.Command{
 	HideHelpCommand: true,
 }
 
+var callsRetrieveTrace = cli.Command{
+	Name:    "retrieve-trace",
+	Usage:   "**Retrieve the full execution trace of a workflow call.**",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "call-id",
+			Required: true,
+		},
+	},
+	Action:          handleCallsRetrieveTrace,
+	HideHelpCommand: true,
+}
+
 func handleCallsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -182,4 +196,46 @@ func handleCallsList(ctx context.Context, cmd *cli.Command) error {
 			Transform:      transform,
 		})
 	}
+}
+
+func handleCallsRetrieveTrace(ctx context.Context, cmd *cli.Command) error {
+	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("call-id") && len(unusedArgs) > 0 {
+		cmd.Set("call-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Calls.GetTrace(ctx, cmd.Value("call-id").(string), options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "calls retrieve-trace",
+		Transform:      transform,
+	})
 }

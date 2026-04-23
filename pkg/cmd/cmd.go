@@ -121,6 +121,7 @@ func init() {
 				Commands: []*cli.Command{
 					&callsRetrieve,
 					&callsList,
+					&callsRetrieveTrace,
 				},
 			},
 			{
@@ -170,6 +171,46 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&inferSchemaCreate,
+				},
+			},
+			{
+				Name:     "collections",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&collectionsCreate,
+					&collectionsList,
+					&collectionsDelete,
+					&collectionsCountTokens,
+				},
+			},
+			{
+				Name:     "collections:items",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&collectionsItemsRetrieve,
+					&collectionsItemsUpdate,
+					&collectionsItemsDelete,
+					&collectionsItemsAdd,
+				},
+			},
+			{
+				Name:     "events",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&eventsSubmitFeedback,
+				},
+			},
+			{
+				Name:     "webhook-secret",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&webhookSecretCreate,
+					&webhookSecretRetrieve,
+					&webhookSecretRevoke,
 				},
 			},
 			{
