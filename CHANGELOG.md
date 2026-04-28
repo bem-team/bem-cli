@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.11.0 (2026-04-28)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/bem-team/bem-cli/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* **api:** api update ([9df1cca](https://github.com/bem-team/bem-cli/commit/9df1cca9ec5fec880b0ec3ab3ea516dcc3657673))
+* **api:** new filesystem and eval endpoints ([06e23b4](https://github.com/bem-team/bem-cli/commit/06e23b4385016d5c8e90441f13f76fc91ce6f2f0))
+
 ## 0.10.0 (2026-04-23)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/bem-team/bem-cli/compare/v0.9.0...v0.10.0)
