@@ -16,7 +16,7 @@ import (
 
 var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create",
-	Usage:   "Create a Function",
+	Usage:   "**Create a function.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -36,6 +36,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Display name of function. Human-readable name to help you identify the function.",
 			BodyPath: "displayName",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "enable-bounding-boxes",
+			Usage:    "Whether bounding box extraction is enabled. Applies to vision input types\n(pdf, png, jpeg, heic, heif, webp) that dispatch through the analyze path.\nWhen true, the function returns the document regions (page, coordinates) from which each\nfield was extracted. Enabling this automatically configures the function to use the bounding\nbox model. Disabling resets to the default.",
+			BodyPath: "enableBoundingBoxes",
+		},
 		&requestflag.Flag[any]{
 			Name:     "output-schema",
 			Usage:    "Desired output structure defined in standard JSON Schema convention.",
@@ -45,6 +50,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "output-schema-name",
 			Usage:    "Name of output schema object.",
 			BodyPath: "outputSchemaName",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "pre-count",
+			Usage:    "Reducing the risk of the model stopping early on long documents.\nTrade-off: Increases total latency. Compatible with\n`enableBoundingBoxes`.",
+			BodyPath: "preCount",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "tabular-chunking-enabled",
@@ -58,7 +68,7 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "classification",
-			Usage:    "V3 create/update variants of the shared function payloads.\n\nThe V3 Functions API no longer accepts the legacy `transform` or `analyze`\nfunction types when creating new functions or updating existing ones — both\nhave been unified under `extract`. Existing functions of those types remain\nreadable and callable via V3, so the V3 read-side unions still include\n`transform` and `analyze` variants.\n\nThe V3 API also renames the internal `route` function type to `classify` on\nthe wire, and the associated `routes` field to `classifications` (type\n`ClassificationList`). Platform-internal storage and processing still use\n`route` / `routes`; the rename is applied only at the V3 API boundary.V3-facing name for the list of classifications a classify function can produce.",
+			Usage:    "List of classifications a classify function can produce. Shares the underlying route list shape.",
 			BodyPath: "classifications",
 		},
 		&requestflag.Flag[string]{
@@ -123,6 +133,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "config",
 			Usage:    "Configuration for enrich function with semantic search steps.\n\n**How Enrich Functions Work:**\n\nEnrich functions use semantic search to augment JSON data with relevant information from collections.\nThey take JSON input (typically from a transform function), extract specified fields, perform vector-based\nsemantic search against collections, and inject the results back into the data.\n\n**Input Requirements:**\n- Must receive JSON input (typically uploaded to S3 from a previous function)\n- Can be chained after transform or other functions that produce JSON output\n\n**Example Use Cases:**\n- Match product descriptions to SKU codes from a product catalog\n- Enrich customer data with account information\n- Link order line items to inventory records\n\n**Configuration:**\n- Define one or more enrichment steps\n- Each step extracts values, searches a collection, and injects results\n- Steps are executed sequentially",
 			BodyPath: "config",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "parse-config",
+			Usage:    "Per-version configuration for a Parse function.\n\nParse renders document pages (PDF, image) via vision LLM and emits\nstructured JSON. The two toggles below independently control entity\nextraction (a per-call output concern) and cross-document memory\nlinking (an environment-wide concern).",
+			BodyPath: "parseConfig",
 		},
 	},
 	Action:          handleFunctionsCreate,
@@ -181,11 +196,28 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			InnerField: "steps",
 		},
 	},
+	"parse-config": {
+		&requestflag.InnerFlag[bool]{
+			Name:       "parse-config.extract-entities",
+			Usage:      "When true, extract named entities (people, organizations, products,\nstudies, identifiers, etc.) and the relationships between them, and\ndedupe by canonical name within the document. When false, only\n`sections[]` is extracted; `entities[]` and `relationships[]` come\nback empty in the parse output. Defaults to true.",
+			InnerField: "extractEntities",
+		},
+		&requestflag.InnerFlag[bool]{
+			Name:       "parse-config.link-across-documents",
+			Usage:      "When true, link this document's entities to entities seen in earlier\ndocuments in this environment, building one canonical record per\nreal-world thing across the corpus. Visible in the Memory tab and\nqueryable via `POST /v3/fs` (op=find / open / xref). Doesn't change\nthis call's parse output. Requires `extractEntities=true`. Defaults\nto true.",
+			InnerField: "linkAcrossDocuments",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "parse-config.schema",
+			Usage:      "Optional JSONSchema. When provided, each chunk performs schema-guided\nextraction. When absent, chunks perform open-ended discovery and\nreturn sections, entities, and relationships per the discovery\nschema.",
+			InnerField: "schema",
+		},
+	},
 })
 
 var functionsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get a Function",
+	Usage:   "**Retrieve a function's current version by name.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -199,7 +231,7 @@ var functionsRetrieve = cli.Command{
 
 var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "update",
-	Usage:   "Update a Function",
+	Usage:   "**Update a function. Updates create a new version.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -217,6 +249,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Display name of function. Human-readable name to help you identify the function.",
 			BodyPath: "displayName",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "enable-bounding-boxes",
+			Usage:    "Whether bounding box extraction is enabled. Applies to vision input types\n(pdf, png, jpeg, heic, heif, webp) that dispatch through the analyze path.\nWhen true, the function returns the document regions (page, coordinates) from which each\nfield was extracted. Enabling this automatically configures the function to use the bounding\nbox model. Disabling resets to the default.",
+			BodyPath: "enableBoundingBoxes",
+		},
 		&requestflag.Flag[string]{
 			Name:     "function-name",
 			Usage:    "Name of function. Must be UNIQUE on a per-environment basis.",
@@ -233,6 +270,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "outputSchemaName",
 		},
 		&requestflag.Flag[bool]{
+			Name:     "pre-count",
+			Usage:    "Reducing the risk of the model stopping early on long documents.\nTrade-off: Increases total latency. Compatible with\n`enableBoundingBoxes`.",
+			BodyPath: "preCount",
+		},
+		&requestflag.Flag[bool]{
 			Name:     "tabular-chunking-enabled",
 			Usage:    "Whether tabular chunking is enabled. When true, tables in CSV/Excel files are processed\nin row batches rather than all at once.",
 			BodyPath: "tabularChunkingEnabled",
@@ -244,7 +286,7 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "classification",
-			Usage:    "V3 create/update variants of the shared function payloads.\n\nThe V3 Functions API no longer accepts the legacy `transform` or `analyze`\nfunction types when creating new functions or updating existing ones — both\nhave been unified under `extract`. Existing functions of those types remain\nreadable and callable via V3, so the V3 read-side unions still include\n`transform` and `analyze` variants.\n\nThe V3 API also renames the internal `route` function type to `classify` on\nthe wire, and the associated `routes` field to `classifications` (type\n`ClassificationList`). Platform-internal storage and processing still use\n`route` / `routes`; the rename is applied only at the V3 API boundary.V3-facing name for the list of classifications a classify function can produce.",
+			Usage:    "List of classifications a classify function can produce. Shares the underlying route list shape.",
 			BodyPath: "classifications",
 		},
 		&requestflag.Flag[string]{
@@ -310,6 +352,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Configuration for enrich function with semantic search steps.\n\n**How Enrich Functions Work:**\n\nEnrich functions use semantic search to augment JSON data with relevant information from collections.\nThey take JSON input (typically from a transform function), extract specified fields, perform vector-based\nsemantic search against collections, and inject the results back into the data.\n\n**Input Requirements:**\n- Must receive JSON input (typically uploaded to S3 from a previous function)\n- Can be chained after transform or other functions that produce JSON output\n\n**Example Use Cases:**\n- Match product descriptions to SKU codes from a product catalog\n- Enrich customer data with account information\n- Link order line items to inventory records\n\n**Configuration:**\n- Define one or more enrichment steps\n- Each step extracts values, searches a collection, and injects results\n- Steps are executed sequentially",
 			BodyPath: "config",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "parse-config",
+			Usage:    "Per-version configuration for a Parse function.\n\nParse renders document pages (PDF, image) via vision LLM and emits\nstructured JSON. The two toggles below independently control entity\nextraction (a per-call output concern) and cross-document memory\nlinking (an environment-wide concern).",
+			BodyPath: "parseConfig",
+		},
 	},
 	Action:          handleFunctionsUpdate,
 	HideHelpCommand: true,
@@ -367,11 +414,28 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			InnerField: "steps",
 		},
 	},
+	"parse-config": {
+		&requestflag.InnerFlag[bool]{
+			Name:       "parse-config.extract-entities",
+			Usage:      "When true, extract named entities (people, organizations, products,\nstudies, identifiers, etc.) and the relationships between them, and\ndedupe by canonical name within the document. When false, only\n`sections[]` is extracted; `entities[]` and `relationships[]` come\nback empty in the parse output. Defaults to true.",
+			InnerField: "extractEntities",
+		},
+		&requestflag.InnerFlag[bool]{
+			Name:       "parse-config.link-across-documents",
+			Usage:      "When true, link this document's entities to entities seen in earlier\ndocuments in this environment, building one canonical record per\nreal-world thing across the corpus. Visible in the Memory tab and\nqueryable via `POST /v3/fs` (op=find / open / xref). Doesn't change\nthis call's parse output. Requires `extractEntities=true`. Defaults\nto true.",
+			InnerField: "linkAcrossDocuments",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "parse-config.schema",
+			Usage:      "Optional JSONSchema. When provided, each chunk performs schema-guided\nextraction. When absent, chunks perform open-ended discovery and\nreturn sections, entities, and relationships per the discovery\nschema.",
+			InnerField: "schema",
+		},
+	},
 })
 
 var functionsList = cli.Command{
 	Name:    "list",
-	Usage:   "List Functions",
+	Usage:   "**List functions in the current environment.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -432,7 +496,7 @@ var functionsList = cli.Command{
 
 var functionsDelete = cli.Command{
 	Name:    "delete",
-	Usage:   "Delete a Function",
+	Usage:   "**Delete a function and every one of its versions.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

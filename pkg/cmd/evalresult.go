@@ -14,58 +14,63 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var functionsVersionsRetrieve = cli.Command{
-	Name:    "retrieve",
-	Usage:   "**Retrieve a specific historical version of a function.**",
+var evalResultsFetchResults = cli.Command{
+	Name:    "fetch-results",
+	Usage:   "**Fetch evaluation results for a batch of transformations (POST).**",
 	Suggest: true,
 	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "function-name",
+		&requestflag.Flag[[]string]{
+			Name:     "transformation-id",
+			Usage:    "Transformation IDs to fetch results for. Up to 100 per request.",
 			Required: true,
+			BodyPath: "transformationIDs",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "version-num",
-			Required: true,
+		&requestflag.Flag[string]{
+			Name:     "evaluation-version",
+			Usage:    "Optional evaluation version filter.",
+			BodyPath: "evaluationVersion",
 		},
 	},
-	Action:          handleFunctionsVersionsRetrieve,
+	Action:          handleEvalResultsFetchResults,
 	HideHelpCommand: true,
 }
 
-var functionsVersionsList = cli.Command{
-	Name:    "list",
-	Usage:   "**List every version of a function.**",
+var evalResultsRetrieveResults = cli.Command{
+	Name:    "retrieve-results",
+	Usage:   "**Fetch evaluation results for a batch of transformations.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "function-name",
-			Required: true,
+			Name:      "transformation-ids",
+			Usage:     "Comma-separated list of transformation IDs to fetch results for.\nBetween 1 and 100 IDs per request.",
+			Required:  true,
+			QueryPath: "transformationIDs",
+		},
+		&requestflag.Flag[string]{
+			Name:      "evaluation-version",
+			Usage:     "Optional evaluation version filter.",
+			QueryPath: "evaluationVersion",
 		},
 	},
-	Action:          handleFunctionsVersionsList,
+	Action:          handleEvalResultsRetrieveResults,
 	HideHelpCommand: true,
 }
 
-func handleFunctionsVersionsRetrieve(ctx context.Context, cmd *cli.Command) error {
+func handleEvalResultsFetchResults(ctx context.Context, cmd *cli.Command) error {
 	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("version-num") && len(unusedArgs) > 0 {
-		cmd.Set("version-num", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.FunctionVersionGetParams{
-		FunctionName: cmd.Value("function-name").(string),
-	}
+	params := bem.EvalResultFetchResultsParams{}
 
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
+		ApplicationJSON,
 		false,
 	)
 	if err != nil {
@@ -74,12 +79,7 @@ func handleFunctionsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Functions.Versions.Get(
-		ctx,
-		cmd.Value("version-num").(int64),
-		params,
-		options...,
-	)
+	_, err = client.Eval.Results.FetchResults(ctx, params, options...)
 	if err != nil {
 		return err
 	}
@@ -92,21 +92,20 @@ func handleFunctionsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 		ExplicitFormat: explicitFormat,
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
-		Title:          "functions:versions retrieve",
+		Title:          "eval:results fetch-results",
 		Transform:      transform,
 	})
 }
 
-func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
+func handleEvalResultsRetrieveResults(ctx context.Context, cmd *cli.Command) error {
 	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("function-name") && len(unusedArgs) > 0 {
-		cmd.Set("function-name", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
+
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
+
+	params := bem.EvalResultGetResultsParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -121,7 +120,7 @@ func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Functions.Versions.List(ctx, cmd.Value("function-name").(string), options...)
+	_, err = client.Eval.Results.GetResults(ctx, params, options...)
 	if err != nil {
 		return err
 	}
@@ -134,7 +133,7 @@ func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
 		ExplicitFormat: explicitFormat,
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
-		Title:          "functions:versions list",
+		Title:          "eval:results retrieve-results",
 		Transform:      transform,
 	})
 }

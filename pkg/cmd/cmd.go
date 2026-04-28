@@ -214,6 +214,31 @@ func init() {
 				},
 			},
 			{
+				Name:     "eval",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&evalTriggerEvaluation,
+				},
+			},
+			{
+				Name:     "eval:results",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&evalResultsFetchResults,
+					&evalResultsRetrieveResults,
+				},
+			},
+			{
+				Name:     "fs",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&fsNavigate,
+				},
+			},
+			{
 				Name:            "@manpages",
 				Usage:           "Generate documentation for 'man'",
 				UsageText:       "bem @manpages [-o bem.1] [--gzip]",
