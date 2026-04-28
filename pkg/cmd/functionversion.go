@@ -16,7 +16,7 @@ import (
 
 var functionsVersionsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get a Function Version",
+	Usage:   "**Retrieve a specific historical version of a function.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -34,7 +34,7 @@ var functionsVersionsRetrieve = cli.Command{
 
 var functionsVersionsList = cli.Command{
 	Name:    "list",
-	Usage:   "List Function Versions",
+	Usage:   "**List every version of a function.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

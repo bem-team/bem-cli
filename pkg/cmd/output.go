@@ -43,6 +43,11 @@ var outputsList = cli.Command{
 			QueryPath: "endingBefore",
 		},
 		&requestflag.Flag[[]string]{
+			Name:      "event-id",
+			Usage:     "Filter to specific output events by their event IDs (KSUIDs).",
+			QueryPath: "eventIDs",
+		},
+		&requestflag.Flag[[]string]{
 			Name:      "function-id",
 			QueryPath: "functionIDs",
 		},
@@ -50,10 +55,25 @@ var outputsList = cli.Command{
 			Name:      "function-name",
 			QueryPath: "functionNames",
 		},
+		&requestflag.Flag[[]int64]{
+			Name:      "function-version-num",
+			Usage:     "Filter to specific function version numbers.",
+			QueryPath: "functionVersionNums",
+		},
 		&requestflag.Flag[bool]{
 			Name:      "include-intermediate",
 			Usage:     "When `true`, includes intermediate events (those that spawned a downstream function call).\nDefault: `false`.",
 			QueryPath: "includeIntermediate",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "is-labelled",
+			Usage:     "If `true`, only outputs with a corrected (labelled) payload.\nIf `false`, only outputs that are not labelled. If omitted, no filter is applied.",
+			QueryPath: "isLabelled",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "is-regression",
+			Usage:     "If `true`, only regression-marked outputs. If `false`, only non-regression outputs.\nIf omitted, no filter is applied.\n\nNote: clients migrating from `/v1-beta/transformations` should pass `isRegression=false`\nexplicitly to preserve the legacy default (regressions hidden unless explicitly requested).",
+			QueryPath: "isRegression",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -78,6 +98,11 @@ var outputsList = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "starting-after",
 			QueryPath: "startingAfter",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "transformation-id",
+			Usage:     "Filter by legacy transformation IDs. Provided for backwards compatibility\nwith clients migrating from `/v1-beta/transformations`.",
+			QueryPath: "transformationIDs",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "workflow-id",
