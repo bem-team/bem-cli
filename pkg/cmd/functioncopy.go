@@ -16,7 +16,7 @@ import (
 
 var functionsCopyCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Copy a Function",
+	Usage:   "**Copy a function to a new name within the same environment.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

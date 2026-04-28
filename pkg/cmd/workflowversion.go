@@ -16,7 +16,7 @@ import (
 
 var workflowsVersionsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get a Workflow Version",
+	Usage:   "**Retrieve a specific historical version of a workflow.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -34,7 +34,7 @@ var workflowsVersionsRetrieve = cli.Command{
 
 var workflowsVersionsList = cli.Command{
 	Name:    "list",
-	Usage:   "List Workflow Versions",
+	Usage:   "**List every version of a workflow.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

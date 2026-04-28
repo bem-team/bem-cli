@@ -19,8 +19,10 @@ func TestFunctionsCreate(t *testing.T) {
 			"--function-name", "functionName",
 			"--type", "extract",
 			"--display-name", "displayName",
+			"--enable-bounding-boxes=true",
 			"--output-schema", "{}",
 			"--output-schema-name", "outputSchemaName",
+			"--pre-count=true",
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
 			"--classification", "{name: name, description: description, functionID: functionID, functionName: functionName, isErrorFallback: true, origin: {email: {patterns: [string]}}, regex: {patterns: [string]}}",
@@ -37,6 +39,7 @@ func TestFunctionsCreate(t *testing.T) {
 			"--join-type", "standard",
 			"--shaping-schema", "shapingSchema",
 			"--config", "{steps: [{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeCosineDistance: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]}",
+			"--parse-config", "{extractEntities: true, linkAcrossDocuments: true, schema: {}}",
 		)
 	})
 
@@ -52,8 +55,10 @@ func TestFunctionsCreate(t *testing.T) {
 			"--function-name", "functionName",
 			"--type", "extract",
 			"--display-name", "displayName",
+			"--enable-bounding-boxes=true",
 			"--output-schema", "{}",
 			"--output-schema-name", "outputSchemaName",
+			"--pre-count=true",
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
 			"--classification.name", "name",
@@ -77,6 +82,9 @@ func TestFunctionsCreate(t *testing.T) {
 			"--join-type", "standard",
 			"--shaping-schema", "shapingSchema",
 			"--config.steps", "[{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeCosineDistance: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]",
+			"--parse-config.extract-entities=true",
+			"--parse-config.link-across-documents=true",
+			"--parse-config.schema", "{}",
 		)
 	})
 
@@ -86,8 +94,10 @@ func TestFunctionsCreate(t *testing.T) {
 			"functionName: functionName\n" +
 			"type: extract\n" +
 			"displayName: displayName\n" +
+			"enableBoundingBoxes: true\n" +
 			"outputSchema: {}\n" +
 			"outputSchemaName: outputSchemaName\n" +
+			"preCount: true\n" +
 			"tabularChunkingEnabled: true\n" +
 			"tags:\n" +
 			"  - string\n" +
@@ -132,7 +142,11 @@ func TestFunctionsCreate(t *testing.T) {
 			"      includeSubcollections: true\n" +
 			"      scoreThreshold: 0\n" +
 			"      searchMode: semantic\n" +
-			"      topK: 1\n")
+			"      topK: 1\n" +
+			"parseConfig:\n" +
+			"  extractEntities: true\n" +
+			"  linkAcrossDocuments: true\n" +
+			"  schema: {}\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -163,9 +177,11 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--path-function-name", "functionName",
 			"--type", "extract",
 			"--display-name", "displayName",
+			"--enable-bounding-boxes=true",
 			"--function-name", "functionName",
 			"--output-schema", "{}",
 			"--output-schema-name", "outputSchemaName",
+			"--pre-count=true",
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
 			"--classification", "{name: name, description: description, functionID: functionID, functionName: functionName, isErrorFallback: true, origin: {email: {patterns: [string]}}, regex: {patterns: [string]}}",
@@ -182,6 +198,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--join-type", "standard",
 			"--shaping-schema", "shapingSchema",
 			"--config", "{steps: [{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeCosineDistance: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]}",
+			"--parse-config", "{extractEntities: true, linkAcrossDocuments: true, schema: {}}",
 		)
 	})
 
@@ -197,9 +214,11 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--path-function-name", "functionName",
 			"--type", "extract",
 			"--display-name", "displayName",
+			"--enable-bounding-boxes=true",
 			"--function-name", "functionName",
 			"--output-schema", "{}",
 			"--output-schema-name", "outputSchemaName",
+			"--pre-count=true",
 			"--tabular-chunking-enabled=true",
 			"--tag", "string",
 			"--classification.name", "name",
@@ -223,6 +242,9 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--join-type", "standard",
 			"--shaping-schema", "shapingSchema",
 			"--config.steps", "[{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeCosineDistance: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]",
+			"--parse-config.extract-entities=true",
+			"--parse-config.link-across-documents=true",
+			"--parse-config.schema", "{}",
 		)
 	})
 
@@ -231,9 +253,11 @@ func TestFunctionsUpdate(t *testing.T) {
 		pipeData := []byte("" +
 			"type: extract\n" +
 			"displayName: displayName\n" +
+			"enableBoundingBoxes: true\n" +
 			"functionName: functionName\n" +
 			"outputSchema: {}\n" +
 			"outputSchemaName: outputSchemaName\n" +
+			"preCount: true\n" +
 			"tabularChunkingEnabled: true\n" +
 			"tags:\n" +
 			"  - string\n" +
@@ -278,7 +302,11 @@ func TestFunctionsUpdate(t *testing.T) {
 			"      includeSubcollections: true\n" +
 			"      scoreThreshold: 0\n" +
 			"      searchMode: semantic\n" +
-			"      topK: 1\n")
+			"      topK: 1\n" +
+			"parseConfig:\n" +
+			"  extractEntities: true\n" +
+			"  linkAcrossDocuments: true\n" +
+			"  schema: {}\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",

@@ -16,7 +16,7 @@ import (
 
 var workflowsCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create",
-	Usage:   "Create a Workflow",
+	Usage:   "**Create a workflow.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -125,7 +125,7 @@ var workflowsCreate = requestflag.WithInnerFlags(cli.Command{
 
 var workflowsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get a Workflow",
+	Usage:   "**Retrieve a workflow's current version by name.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -139,7 +139,7 @@ var workflowsRetrieve = cli.Command{
 
 var workflowsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "update",
-	Usage:   "Update a Workflow",
+	Usage:   "**Update a workflow. Updates create a new version.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -247,7 +247,7 @@ var workflowsUpdate = requestflag.WithInnerFlags(cli.Command{
 
 var workflowsList = cli.Command{
 	Name:    "list",
-	Usage:   "List Workflows",
+	Usage:   "**List workflows in the current environment.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -304,7 +304,7 @@ var workflowsList = cli.Command{
 
 var workflowsDelete = cli.Command{
 	Name:    "delete",
-	Usage:   "Delete a Workflow",
+	Usage:   "**Delete a workflow and every one of its versions.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -366,7 +366,7 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 
 var workflowsCopy = cli.Command{
 	Name:    "copy",
-	Usage:   "Copy a Workflow",
+	Usage:   "**Copy a workflow to a new name.**",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
