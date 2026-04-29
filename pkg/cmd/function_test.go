@@ -38,7 +38,7 @@ func TestFunctionsCreate(t *testing.T) {
 			"--split-type", "print_page",
 			"--join-type", "standard",
 			"--shaping-schema", "shapingSchema",
-			"--config", "{steps: [{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeCosineDistance: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]}",
+			"--config", "{steps: [{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeScore: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]}",
 			"--parse-config", "{extractEntities: true, linkAcrossDocuments: true, schema: {}}",
 		)
 	})
@@ -81,7 +81,7 @@ func TestFunctionsCreate(t *testing.T) {
 			"--split-type", "print_page",
 			"--join-type", "standard",
 			"--shaping-schema", "shapingSchema",
-			"--config.steps", "[{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeCosineDistance: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]",
+			"--config.steps", "[{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeScore: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]",
 			"--parse-config.extract-entities=true",
 			"--parse-config.link-across-documents=true",
 			"--parse-config.schema", "{}",
@@ -138,7 +138,7 @@ func TestFunctionsCreate(t *testing.T) {
 			"    - collectionName: collectionName\n" +
 			"      sourceField: sourceField\n" +
 			"      targetField: targetField\n" +
-			"      includeCosineDistance: true\n" +
+			"      includeScore: true\n" +
 			"      includeSubcollections: true\n" +
 			"      scoreThreshold: 0\n" +
 			"      searchMode: semantic\n" +
@@ -197,7 +197,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--split-type", "print_page",
 			"--join-type", "standard",
 			"--shaping-schema", "shapingSchema",
-			"--config", "{steps: [{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeCosineDistance: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]}",
+			"--config", "{steps: [{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeScore: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]}",
 			"--parse-config", "{extractEntities: true, linkAcrossDocuments: true, schema: {}}",
 		)
 	})
@@ -241,7 +241,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"--split-type", "print_page",
 			"--join-type", "standard",
 			"--shaping-schema", "shapingSchema",
-			"--config.steps", "[{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeCosineDistance: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]",
+			"--config.steps", "[{collectionName: collectionName, sourceField: sourceField, targetField: targetField, includeScore: true, includeSubcollections: true, scoreThreshold: 0, searchMode: semantic, topK: 1}]",
 			"--parse-config.extract-entities=true",
 			"--parse-config.link-across-documents=true",
 			"--parse-config.schema", "{}",
@@ -298,7 +298,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			"    - collectionName: collectionName\n" +
 			"      sourceField: sourceField\n" +
 			"      targetField: targetField\n" +
-			"      includeCosineDistance: true\n" +
+			"      includeScore: true\n" +
 			"      includeSubcollections: true\n" +
 			"      scoreThreshold: 0\n" +
 			"      searchMode: semantic\n" +
