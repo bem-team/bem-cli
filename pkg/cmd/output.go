@@ -49,6 +49,11 @@ var outputsList = cli.Command{
 			QueryPath: "eventIDs",
 		},
 		&requestflag.Flag[[]string]{
+			Name:      "event-type",
+			Usage:     "Filter to specific non-error output event types, e.g. `classify` or `extract`.",
+			QueryPath: "eventTypes",
+		},
+		&requestflag.Flag[[]string]{
 			Name:      "function-id",
 			QueryPath: "functionIDs",
 		},
