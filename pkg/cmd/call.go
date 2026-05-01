@@ -20,8 +20,9 @@ var callsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "call-id",
-			Required: true,
+			Name:      "call-id",
+			Required:  true,
+			PathParam: "callID",
 		},
 	},
 	Action:          handleCallsRetrieve,
@@ -93,8 +94,9 @@ var callsRetrieveTrace = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "call-id",
-			Required: true,
+			Name:      "call-id",
+			Required:  true,
+			PathParam: "callID",
 		},
 	},
 	Action:          handleCallsRetrieveTrace,
@@ -151,8 +153,6 @@ func handleCallsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.CallListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -163,6 +163,8 @@ func handleCallsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.CallListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")

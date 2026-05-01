@@ -64,8 +64,6 @@ func handleEvalResultsFetchResults(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.EvalResultFetchResultsParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -76,6 +74,8 @@ func handleEvalResultsFetchResults(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
+	params := bem.EvalResultFetchResultsParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -105,8 +105,6 @@ func handleEvalResultsRetrieveResults(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.EvalResultGetResultsParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -117,6 +115,8 @@ func handleEvalResultsRetrieveResults(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
+
+	params := bem.EvalResultGetResultsParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

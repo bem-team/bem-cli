@@ -129,8 +129,9 @@ var workflowsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "workflow-name",
-			Required: true,
+			Name:      "workflow-name",
+			Required:  true,
+			PathParam: "workflowName",
 		},
 	},
 	Action:          handleWorkflowsRetrieve,
@@ -143,8 +144,9 @@ var workflowsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "workflow-name",
-			Required: true,
+			Name:      "workflow-name",
+			Required:  true,
+			PathParam: "workflowName",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "connector",
@@ -308,8 +310,9 @@ var workflowsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "workflow-name",
-			Required: true,
+			Name:      "workflow-name",
+			Required:  true,
+			PathParam: "workflowName",
 		},
 	},
 	Action:          handleWorkflowsDelete,
@@ -322,8 +325,9 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "workflow-name",
-			Required: true,
+			Name:      "workflow-name",
+			Required:  true,
+			PathParam: "workflowName",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "input",
@@ -414,8 +418,6 @@ func handleWorkflowsCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.WorkflowNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -426,6 +428,8 @@ func handleWorkflowsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.WorkflowNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -500,8 +504,6 @@ func handleWorkflowsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.WorkflowUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -512,6 +514,8 @@ func handleWorkflowsUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.WorkflowUpdateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -546,8 +550,6 @@ func handleWorkflowsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.WorkflowListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -558,6 +560,8 @@ func handleWorkflowsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.WorkflowListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -629,8 +633,6 @@ func handleWorkflowsCall(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.WorkflowCallParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -641,6 +643,8 @@ func handleWorkflowsCall(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.WorkflowCallParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -675,8 +679,6 @@ func handleWorkflowsCopy(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.WorkflowCopyParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -687,6 +689,8 @@ func handleWorkflowsCopy(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.WorkflowCopyParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
