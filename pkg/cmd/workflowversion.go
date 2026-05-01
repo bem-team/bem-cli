@@ -20,12 +20,14 @@ var workflowsVersionsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "workflow-name",
-			Required: true,
+			Name:      "workflow-name",
+			Required:  true,
+			PathParam: "workflowName",
 		},
 		&requestflag.Flag[int64]{
-			Name:     "version-num",
-			Required: true,
+			Name:      "version-num",
+			Required:  true,
+			PathParam: "versionNum",
 		},
 	},
 	Action:          handleWorkflowsVersionsRetrieve,
@@ -38,8 +40,9 @@ var workflowsVersionsList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "workflow-name",
-			Required: true,
+			Name:      "workflow-name",
+			Required:  true,
+			PathParam: "workflowName",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "ending-before",
@@ -80,10 +83,6 @@ func handleWorkflowsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.WorkflowVersionGetParams{
-		WorkflowName: cmd.Value("workflow-name").(string),
-	}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -93,6 +92,10 @@ func handleWorkflowsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 	)
 	if err != nil {
 		return err
+	}
+
+	params := bem.WorkflowVersionGetParams{
+		WorkflowName: cmd.Value("workflow-name").(string),
 	}
 
 	var res []byte
@@ -131,8 +134,6 @@ func handleWorkflowsVersionsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.WorkflowVersionListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -143,6 +144,8 @@ func handleWorkflowsVersionsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.WorkflowVersionListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")

@@ -20,12 +20,14 @@ var functionsVersionsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "function-name",
-			Required: true,
+			Name:      "function-name",
+			Required:  true,
+			PathParam: "functionName",
 		},
 		&requestflag.Flag[int64]{
-			Name:     "version-num",
-			Required: true,
+			Name:      "version-num",
+			Required:  true,
+			PathParam: "versionNum",
 		},
 	},
 	Action:          handleFunctionsVersionsRetrieve,
@@ -38,8 +40,9 @@ var functionsVersionsList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "function-name",
-			Required: true,
+			Name:      "function-name",
+			Required:  true,
+			PathParam: "functionName",
 		},
 	},
 	Action:          handleFunctionsVersionsList,
@@ -57,10 +60,6 @@ func handleFunctionsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.FunctionVersionGetParams{
-		FunctionName: cmd.Value("function-name").(string),
-	}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -70,6 +69,10 @@ func handleFunctionsVersionsRetrieve(ctx context.Context, cmd *cli.Command) erro
 	)
 	if err != nil {
 		return err
+	}
+
+	params := bem.FunctionVersionGetParams{
+		FunctionName: cmd.Value("function-name").(string),
 	}
 
 	var res []byte

@@ -142,8 +142,6 @@ func handleCollectionsItemsRetrieve(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.CollectionItemGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -154,6 +152,8 @@ func handleCollectionsItemsRetrieve(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := bem.CollectionItemGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -183,8 +183,6 @@ func handleCollectionsItemsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.CollectionItemUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -195,6 +193,8 @@ func handleCollectionsItemsUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.CollectionItemUpdateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -224,8 +224,6 @@ func handleCollectionsItemsDelete(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.CollectionItemDeleteParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -236,6 +234,8 @@ func handleCollectionsItemsDelete(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.CollectionItemDeleteParams{}
 
 	return client.Collections.Items.Delete(ctx, params, options...)
 }
@@ -248,8 +248,6 @@ func handleCollectionsItemsAdd(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.CollectionItemAddParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -260,6 +258,8 @@ func handleCollectionsItemsAdd(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.CollectionItemAddParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

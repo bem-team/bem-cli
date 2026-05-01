@@ -20,8 +20,9 @@ var errorsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "event-id",
-			Required: true,
+			Name:      "event-id",
+			Required:  true,
+			PathParam: "eventID",
 		},
 	},
 	Action:          handleErrorsRetrieve,
@@ -141,8 +142,6 @@ func handleErrorsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.ErrorListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -153,6 +152,8 @@ func handleErrorsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.ErrorListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
