@@ -31,6 +31,7 @@ func TestOutputsList(t *testing.T) {
 			"--call-id", "string",
 			"--ending-before", "endingBefore",
 			"--event-id", "string",
+			"--event-type", "string",
 			"--function-id", "string",
 			"--function-name", "string",
 			"--function-version-num", "0",

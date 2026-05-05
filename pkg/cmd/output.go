@@ -20,8 +20,9 @@ var outputsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "event-id",
-			Required: true,
+			Name:      "event-id",
+			Required:  true,
+			PathParam: "eventID",
 		},
 	},
 	Action:          handleOutputsRetrieve,
@@ -46,6 +47,11 @@ var outputsList = cli.Command{
 			Name:      "event-id",
 			Usage:     "Filter to specific output events by their event IDs (KSUIDs).",
 			QueryPath: "eventIDs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "event-type",
+			Usage:     "Filter to specific non-error output event types, e.g. `classify` or `extract`.",
+			QueryPath: "eventTypes",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "function-id",
@@ -171,8 +177,6 @@ func handleOutputsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.OutputListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -183,6 +187,8 @@ func handleOutputsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.OutputListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")

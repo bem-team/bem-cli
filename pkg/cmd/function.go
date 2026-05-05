@@ -221,8 +221,9 @@ var functionsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "function-name",
-			Required: true,
+			Name:      "function-name",
+			Required:  true,
+			PathParam: "functionName",
 		},
 	},
 	Action:          handleFunctionsRetrieve,
@@ -235,8 +236,9 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "path-function-name",
-			Required: true,
+			Name:      "path-function-name",
+			Required:  true,
+			PathParam: "functionName",
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
@@ -500,8 +502,9 @@ var functionsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "function-name",
-			Required: true,
+			Name:      "function-name",
+			Required:  true,
+			PathParam: "functionName",
 		},
 	},
 	Action:          handleFunctionsDelete,
@@ -516,8 +519,6 @@ func handleFunctionsCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.FunctionNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -528,6 +529,8 @@ func handleFunctionsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.FunctionNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -602,8 +605,6 @@ func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.FunctionUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -614,6 +615,8 @@ func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.FunctionUpdateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -648,8 +651,6 @@ func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := bem.FunctionListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -660,6 +661,8 @@ func handleFunctionsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := bem.FunctionListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")

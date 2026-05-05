@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.13.0 (2026-05-04)
+
+Full Changelog: [v0.12.0...v0.13.0](https://github.com/bem-team/bem-cli/compare/v0.12.0...v0.13.0)
+
+### Features
+
+* **api:** api update ([f21f58e](https://github.com/bem-team/bem-cli/commit/f21f58ed3bc0d4449263f84f02e3b2a26b6c4849))
+* support passing path and query params over stdin ([8175668](https://github.com/bem-team/bem-cli/commit/8175668eb03768b6deef2c0f0c701664c4c8dad2))
+
+
+### Bug Fixes
+
+* **cli:** correctly load zsh autocompletion ([c87fc67](https://github.com/bem-team/bem-cli/commit/c87fc67256beb805c61677924f80ac3cd738503d))
+* flags for nullable body scalar fields are strictly typed ([ffcea48](https://github.com/bem-team/bem-cli/commit/ffcea48129cc94de0a13b2bd600b16b5fc79b905))
+
 ## 0.12.0 (2026-04-29)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/bem-team/bem-cli/compare/v0.11.0...v0.12.0)
