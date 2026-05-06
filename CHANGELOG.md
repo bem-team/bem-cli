@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.1 (2026-05-06)
+
+Full Changelog: [v0.13.0...v0.13.1](https://github.com/bem-team/bem-cli/compare/v0.13.0...v0.13.1)
+
+### Chores
+
+* **internal:** codegen related update ([e3296fb](https://github.com/bem-team/bem-cli/commit/e3296fb13f27a5a0abbd6badc7791968330dfc01))
+
 ## 0.13.0 (2026-05-04)
 
 Full Changelog: [v0.12.0...v0.13.0](https://github.com/bem-team/bem-cli/compare/v0.12.0...v0.13.0)
