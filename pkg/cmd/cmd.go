@@ -239,6 +239,27 @@ func init() {
 				},
 			},
 			{
+				Name:     "connectors",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&connectorsCreate,
+					&connectorsList,
+				},
+			},
+			{
+				Name:     "subscriptions",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&subscriptionsCreate,
+					&subscriptionsRetrieve,
+					&subscriptionsUpdate,
+					&subscriptionsList,
+					&subscriptionsDelete,
+				},
+			},
+			{
 				Name:            "@manpages",
 				Usage:           "Generate documentation for 'man'",
 				UsageText:       "bem @manpages [-o bem.1] [--gzip]",

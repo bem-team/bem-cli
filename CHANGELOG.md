@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.0 (2026-05-07)
+
+Full Changelog: [v0.13.1...v0.14.0](https://github.com/bem-team/bem-cli/compare/v0.13.1...v0.14.0)
+
+### Features
+
+* **api:** add new resources and webhook support ([8c7a997](https://github.com/bem-team/bem-cli/commit/8c7a9977b7c64f75b61ad256ece225e532fa4cb1))
+
 ## 0.13.1 (2026-05-06)
 
 Full Changelog: [v0.13.0...v0.13.1](https://github.com/bem-team/bem-cli/compare/v0.13.0...v0.13.1)
