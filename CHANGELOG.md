@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.14.1 (2026-05-13)
+
+Full Changelog: [v0.14.0...v0.14.1](https://github.com/bem-team/bem-cli/compare/v0.14.0...v0.14.1)
+
+### Chores
+
+* redact api-key headers in debug logs ([f0d1f50](https://github.com/bem-team/bem-cli/commit/f0d1f5052ce7451fa6d08d7a21d24fc6cd7448c8))
+* **test:** scope body requests to a single variant ([cd5bc6e](https://github.com/bem-team/bem-cli/commit/cd5bc6ed72a2f272b53d311b72a3862cb2fe6c70))
+
 ## 0.14.0 (2026-05-07)
 
 Full Changelog: [v0.13.1...v0.14.0](https://github.com/bem-team/bem-cli/compare/v0.13.1...v0.14.0)
