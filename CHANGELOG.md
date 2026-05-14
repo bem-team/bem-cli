@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.0 (2026-05-14)
+
+Full Changelog: [v0.15.0...v0.16.0](https://github.com/bem-team/bem-cli/compare/v0.15.0...v0.16.0)
+
+### Features
+
+* **api:** function regression and view endpoint support ([1f082e8](https://github.com/bem-team/bem-cli/commit/1f082e88e40ce7cb7c01da95aaa4652f2898ad9e))
+
 ## 0.15.0 (2026-05-14)
 
 Full Changelog: [v0.14.1...v0.15.0](https://github.com/bem-team/bem-cli/compare/v0.14.1...v0.15.0)
