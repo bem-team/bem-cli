@@ -8,34 +8,6 @@ import (
 	"github.com/bem-team/bem-cli/internal/mocktest"
 )
 
-func TestEvalResultsFetchResults(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"eval:results", "fetch-results",
-			"--transformation-id", "tr_01HXAB...",
-			"--transformation-id", "tr_01HXCD...",
-			"--evaluation-version", "0.1.0-gemini",
-		)
-	})
-
-	t.Run("piping data", func(t *testing.T) {
-		// Test piping YAML data over stdin
-		pipeData := []byte("" +
-			"transformationIDs:\n" +
-			"  - tr_01HXAB...\n" +
-			"  - tr_01HXCD...\n" +
-			"evaluationVersion: 0.1.0-gemini\n")
-		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData,
-			"--api-key", "string",
-			"eval:results", "fetch-results",
-		)
-	})
-}
-
 func TestEvalResultsRetrieveResults(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
@@ -43,8 +15,9 @@ func TestEvalResultsRetrieveResults(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"eval:results", "retrieve-results",
-			"--transformation-ids", "transformationIDs",
 			"--evaluation-version", "evaluationVersion",
+			"--event-ids", "eventIDs",
+			"--transformation-ids", "transformationIDs",
 		)
 	})
 }
