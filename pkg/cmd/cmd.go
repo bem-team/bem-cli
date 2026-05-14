@@ -95,6 +95,9 @@ func init() {
 					&functionsUpdate,
 					&functionsList,
 					&functionsDelete,
+					&functionsCompareMetrics,
+					&functionsEstimateReviewRequirements,
+					&functionsGetMetrics,
 				},
 			},
 			{
@@ -112,6 +115,15 @@ func init() {
 				Commands: []*cli.Command{
 					&functionsVersionsRetrieve,
 					&functionsVersionsList,
+				},
+			},
+			{
+				Name:     "functions:regression",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&functionsRegressionApplyCorrections,
+					&functionsRegressionRun,
 				},
 			},
 			{
@@ -256,6 +268,20 @@ func init() {
 					&subscriptionsUpdate,
 					&subscriptionsList,
 					&subscriptionsDelete,
+				},
+			},
+			{
+				Name:     "views",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&viewsCreate,
+					&viewsRetrieve,
+					&viewsUpdate,
+					&viewsList,
+					&viewsDelete,
+					&viewsGenerateAggregationData,
+					&viewsGenerateTableData,
 				},
 			},
 			{
