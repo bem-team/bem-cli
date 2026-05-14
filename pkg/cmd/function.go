@@ -511,6 +511,148 @@ var functionsDelete = cli.Command{
 	HideHelpCommand: true,
 }
 
+var functionsCompareMetrics = cli.Command{
+	Name:    "compare-metrics",
+	Usage:   "**Compare metrics between two function versions.**",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "function-name",
+			Usage:    "Name of the function to compare versions for",
+			Required: true,
+			BodyPath: "functionName",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "baseline-version-num",
+			Usage:    "**Baseline version number for comparison**\n\nIf not provided, defaults to the previous version (current - 1).",
+			BodyPath: "baselineVersionNum",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "comparison-version-num",
+			Usage:    "**Comparison version number**\n\nIf not provided, defaults to the current version.",
+			BodyPath: "comparisonVersionNum",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "is-regression",
+			Usage:    "**Whether to compare regression test data only**\n\nIf true, only compares transformations marked as regression tests.",
+			BodyPath: "isRegression",
+		},
+	},
+	Action:          handleFunctionsCompareMetrics,
+	HideHelpCommand: true,
+}
+
+var functionsEstimateReviewRequirements = cli.Command{
+	Name:    "estimate-review-requirements",
+	Usage:   "**Estimate human review requirements for a function.**",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "function-name",
+			Usage:    "Name of the function to analyze",
+			Required: true,
+			BodyPath: "functionName",
+		},
+		&requestflag.Flag[[]int64]{
+			Name:     "confidence-level",
+			Usage:    "Confidence levels for statistical analysis as integers representing percentages (e.g., [90, 95, 99] for 90%, 95%, 99%). IMPORTANT: Only integers are accepted, floats like 0.95 will be rejected.",
+			Default:  []int64{95},
+			BodyPath: "confidenceLevels",
+		},
+		&requestflag.Flag[string]{
+			Name:     "confidence-method",
+			Usage:    "Confidence interval calculation method (default \"wald\").\n\n- \"wald\": Normal approximation method (faster, standard)\n- \"wilson\": Wilson score interval (more robust for extreme rates)",
+			Default:  "wald",
+			BodyPath: "confidenceMethod",
+		},
+		&requestflag.Flag[string]{
+			Name:     "evaluation-version",
+			Usage:    `Optional evaluation version to filter evaluations by. Must be one of the supported versions. If not provided, defaults to "0.1.0-gemini".`,
+			Default:  "0.1.0-gemini",
+			BodyPath: "evaluationVersion",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "function-version-num",
+			Usage:    "Optional function version number to analyze. If not provided, uses the latest/current version of the function.",
+			BodyPath: "functionVersionNum",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "is-regression",
+			Usage:    "Internal flag indicating if the request is from a regression test",
+			BodyPath: "isRegression",
+		},
+		&requestflag.Flag[float64]{
+			Name:     "margin-of-error",
+			Usage:    "Margin of error for statistical calculations",
+			Default:  0.05,
+			BodyPath: "marginOfError",
+		},
+		&requestflag.Flag[float64]{
+			Name:     "threshold-max",
+			Usage:    "Maximum confidence threshold to analyze",
+			Default:  1,
+			BodyPath: "thresholdMax",
+		},
+		&requestflag.Flag[float64]{
+			Name:     "threshold-min",
+			Usage:    "Minimum confidence threshold to analyze",
+			Default:  0.5,
+			BodyPath: "thresholdMin",
+		},
+		&requestflag.Flag[float64]{
+			Name:     "threshold-step",
+			Usage:    "Step size for threshold analysis (smaller = more granular)",
+			Default:  0.01,
+			BodyPath: "thresholdStep",
+		},
+	},
+	Action:          handleFunctionsEstimateReviewRequirements,
+	HideHelpCommand: true,
+}
+
+var functionsGetMetrics = cli.Command{
+	Name:    "get-metrics",
+	Usage:   "**Retrieve performance metrics for functions based on labeled transformation\ndata.**",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "ending-before",
+			Usage:     "Cursor — a `functionID` defining your place in the list.",
+			QueryPath: "endingBefore",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "function-id",
+			QueryPath: "functionIDs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "function-name",
+			QueryPath: "functionNames",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Default:   50,
+			QueryPath: "limit",
+		},
+		&requestflag.Flag[string]{
+			Name:      "sort-order",
+			Usage:     "Sort direction over the result set (default `asc`). Pagination works\nsymmetrically in both directions via `startingAfter` / `endingBefore`.",
+			Default:   "asc",
+			QueryPath: "sortOrder",
+		},
+		&requestflag.Flag[string]{
+			Name:      "starting-after",
+			Usage:     "Cursor — a `functionID` defining your place in the list.",
+			QueryPath: "startingAfter",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "type",
+			QueryPath: "types",
+		},
+	},
+	Action:          handleFunctionsGetMetrics,
+	HideHelpCommand: true,
+}
+
 func handleFunctionsCreate(ctx context.Context, cmd *cli.Command) error {
 	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -721,4 +863,127 @@ func handleFunctionsDelete(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	return client.Functions.Delete(ctx, cmd.Value("function-name").(string), options...)
+}
+
+func handleFunctionsCompareMetrics(ctx context.Context, cmd *cli.Command) error {
+	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := bem.FunctionCompareMetricsParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Functions.CompareMetrics(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "functions compare-metrics",
+		Transform:      transform,
+	})
+}
+
+func handleFunctionsEstimateReviewRequirements(ctx context.Context, cmd *cli.Command) error {
+	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := bem.FunctionEstimateReviewRequirementsParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Functions.EstimateReviewRequirements(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "functions estimate-review-requirements",
+		Transform:      transform,
+	})
+}
+
+func handleFunctionsGetMetrics(ctx context.Context, cmd *cli.Command) error {
+	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := bem.FunctionGetMetricsParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Functions.GetMetrics(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "functions get-metrics",
+		Transform:      transform,
+	})
 }
