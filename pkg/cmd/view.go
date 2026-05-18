@@ -49,6 +49,11 @@ var viewsCreate = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "name",
 		},
+		&requestflag.Flag[string]{
+			Name:     "description",
+			Usage:    "Description of the view",
+			BodyPath: "description",
+		},
 	},
 	Action:          handleViewsCreate,
 	HideHelpCommand: true,
@@ -68,6 +73,11 @@ var viewsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:       "aggregation.aggregate-column-name",
 			Usage:      "Name of the column to aggregate (required for count_distinct, sum, average, min, max functions)",
 			InnerField: "aggregateColumnName",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "aggregation.display-type",
+			Usage:      "How to display the aggregation results",
+			InnerField: "displayType",
 		},
 		&requestflag.InnerFlag[*string]{
 			Name:       "aggregation.group-by-column-name",
@@ -183,6 +193,11 @@ var viewsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "name",
 		},
+		&requestflag.Flag[string]{
+			Name:     "description",
+			Usage:    "Description of the view",
+			BodyPath: "description",
+		},
 	},
 	Action:          handleViewsUpdate,
 	HideHelpCommand: true,
@@ -202,6 +217,11 @@ var viewsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Name:       "aggregation.aggregate-column-name",
 			Usage:      "Name of the column to aggregate (required for count_distinct, sum, average, min, max functions)",
 			InnerField: "aggregateColumnName",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "aggregation.display-type",
+			Usage:      "How to display the aggregation results",
+			InnerField: "displayType",
 		},
 		&requestflag.InnerFlag[*string]{
 			Name:       "aggregation.group-by-column-name",
@@ -369,6 +389,11 @@ var viewsGenerateAggregationData = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "timeWindow",
 		},
+		&requestflag.Flag[string]{
+			Name:     "description",
+			Usage:    "Description of the view",
+			BodyPath: "description",
+		},
 	},
 	Action:          handleViewsGenerateAggregationData,
 	HideHelpCommand: true,
@@ -388,6 +413,11 @@ var viewsGenerateAggregationData = requestflag.WithInnerFlags(cli.Command{
 			Name:       "aggregation.aggregate-column-name",
 			Usage:      "Name of the column to aggregate (required for count_distinct, sum, average, min, max functions)",
 			InnerField: "aggregateColumnName",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "aggregation.display-type",
+			Usage:      "How to display the aggregation results",
+			InnerField: "displayType",
 		},
 		&requestflag.InnerFlag[*string]{
 			Name:       "aggregation.group-by-column-name",
@@ -501,6 +531,11 @@ var viewsGenerateTableData = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "timeWindow",
 		},
+		&requestflag.Flag[string]{
+			Name:     "description",
+			Usage:    "Description of the view",
+			BodyPath: "description",
+		},
 		&requestflag.Flag[*int64]{
 			Name:     "limit",
 			Usage:    "Maximum number of rows to return (default: 50, max: 200)",
@@ -530,6 +565,11 @@ var viewsGenerateTableData = requestflag.WithInnerFlags(cli.Command{
 			Name:       "aggregation.aggregate-column-name",
 			Usage:      "Name of the column to aggregate (required for count_distinct, sum, average, min, max functions)",
 			InnerField: "aggregateColumnName",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "aggregation.display-type",
+			Usage:      "How to display the aggregation results",
+			InnerField: "displayType",
 		},
 		&requestflag.InnerFlag[*string]{
 			Name:       "aggregation.group-by-column-name",
