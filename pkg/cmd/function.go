@@ -131,7 +131,7 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "config",
-			Usage:    "Configuration for enrich function with semantic search steps.\n\n**How Enrich Functions Work:**\n\nEnrich functions use semantic search to augment JSON data with relevant information from collections.\nThey take JSON input (typically from a transform function), extract specified fields, perform vector-based\nsemantic search against collections, and inject the results back into the data.\n\n**Input Requirements:**\n- Must receive JSON input (typically uploaded to S3 from a previous function)\n- Can be chained after transform or other functions that produce JSON output\n\n**Example Use Cases:**\n- Match product descriptions to SKU codes from a product catalog\n- Enrich customer data with account information\n- Link order line items to inventory records\n\n**Configuration:**\n- Define one or more enrichment steps\n- Each step extracts values, searches a collection, and injects results\n- Steps are executed sequentially",
+			Usage:    "Configuration for an enrich function.\n\n**How Enrich Functions Work:**\n\nEnrich functions augment JSON input with data from external sources. They take JSON input\n(typically from a previous function), extract specified fields, fetch or search for matching\ndata, and inject the results back into the JSON.\n\n**Data Sources:**\n- **Collections** (`source: \"collection\"`): Vector/keyword search against a BEM collection.\nBest for semantic matching against pre-indexed documents.\n- **Endpoints** (`source: \"endpoint\"`): HTTP call to any user-provided REST API.\nBest for looking up live data from CRMs, ERPs, or other external systems.\nOptionally uses LLM agent reasoning to rank candidates returned by the endpoint.\n\n**Input Requirements:**\n- Must receive JSON input (typically from a previous function's output)\n\n**Example Use Cases:**\n- Match product descriptions to SKU codes from a product catalog collection\n- Enrich customer data with account details from a CRM endpoint\n- Use LLM agent reasoning to fuzzy-match line item descriptions to catalog products\n\n**Configuration:**\n- Define named endpoints (for endpoint-source steps)\n- Define one or more enrichment steps; steps are executed sequentially",
 			BodyPath: "config",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -197,8 +197,13 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 	"config": {
 		&requestflag.InnerFlag[[]map[string]any]{
 			Name:       "config.steps",
-			Usage:      "Array of enrichment steps to execute sequentially",
+			Usage:      "Array of enrichment steps to execute sequentially.",
 			InnerField: "steps",
+		},
+		&requestflag.InnerFlag[[]map[string]any]{
+			Name:       "config.endpoints",
+			Usage:      "Named HTTP endpoints available to endpoint-source steps.\nEach endpoint must have a unique `name` referenced by the step's `endpointName`.\nRequired when any step uses `source: \"endpoint\"`.",
+			InnerField: "endpoints",
 		},
 	},
 	"extra-config": {
@@ -363,7 +368,7 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "config",
-			Usage:    "Configuration for enrich function with semantic search steps.\n\n**How Enrich Functions Work:**\n\nEnrich functions use semantic search to augment JSON data with relevant information from collections.\nThey take JSON input (typically from a transform function), extract specified fields, perform vector-based\nsemantic search against collections, and inject the results back into the data.\n\n**Input Requirements:**\n- Must receive JSON input (typically uploaded to S3 from a previous function)\n- Can be chained after transform or other functions that produce JSON output\n\n**Example Use Cases:**\n- Match product descriptions to SKU codes from a product catalog\n- Enrich customer data with account information\n- Link order line items to inventory records\n\n**Configuration:**\n- Define one or more enrichment steps\n- Each step extracts values, searches a collection, and injects results\n- Steps are executed sequentially",
+			Usage:    "Configuration for an enrich function.\n\n**How Enrich Functions Work:**\n\nEnrich functions augment JSON input with data from external sources. They take JSON input\n(typically from a previous function), extract specified fields, fetch or search for matching\ndata, and inject the results back into the JSON.\n\n**Data Sources:**\n- **Collections** (`source: \"collection\"`): Vector/keyword search against a BEM collection.\nBest for semantic matching against pre-indexed documents.\n- **Endpoints** (`source: \"endpoint\"`): HTTP call to any user-provided REST API.\nBest for looking up live data from CRMs, ERPs, or other external systems.\nOptionally uses LLM agent reasoning to rank candidates returned by the endpoint.\n\n**Input Requirements:**\n- Must receive JSON input (typically from a previous function's output)\n\n**Example Use Cases:**\n- Match product descriptions to SKU codes from a product catalog collection\n- Enrich customer data with account details from a CRM endpoint\n- Use LLM agent reasoning to fuzzy-match line item descriptions to catalog products\n\n**Configuration:**\n- Define named endpoints (for endpoint-source steps)\n- Define one or more enrichment steps; steps are executed sequentially",
 			BodyPath: "config",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -429,8 +434,13 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 	"config": {
 		&requestflag.InnerFlag[[]map[string]any]{
 			Name:       "config.steps",
-			Usage:      "Array of enrichment steps to execute sequentially",
+			Usage:      "Array of enrichment steps to execute sequentially.",
 			InnerField: "steps",
+		},
+		&requestflag.InnerFlag[[]map[string]any]{
+			Name:       "config.endpoints",
+			Usage:      "Named HTTP endpoints available to endpoint-source steps.\nEach endpoint must have a unique `name` referenced by the step's `endpointName`.\nRequired when any step uses `source: \"endpoint\"`.",
+			InnerField: "endpoints",
 		},
 	},
 	"extra-config": {
