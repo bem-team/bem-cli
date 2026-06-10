@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.19.0 (2026-06-09)
+
+Full Changelog: [v0.18.0...v0.19.0](https://github.com/bem-team/bem-cli/compare/v0.18.0...v0.19.0)
+
+### Features
+
+* **api:** api update ([e8b589e](https://github.com/bem-team/bem-cli/commit/e8b589eb668d64623ca90c12516223cf0322d8f1))
+* **api:** api update ([9e7444e](https://github.com/bem-team/bem-cli/commit/9e7444ef497e06b611550f28e8a5a97b1f50420a))
+
+
+### Chores
+
+* **internal:** codegen related update ([482715c](https://github.com/bem-team/bem-cli/commit/482715c71c0608e8650d254b2487c6d3ffebc8f5))
+
 ## 0.18.0 (2026-05-26)
 
 Full Changelog: [v0.17.0...v0.18.0](https://github.com/bem-team/bem-cli/compare/v0.17.0...v0.18.0)
