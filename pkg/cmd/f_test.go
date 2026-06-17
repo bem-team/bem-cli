@@ -17,6 +17,7 @@ func TestFsNavigate(t *testing.T) {
 			"--api-key", "string",
 			"fs", "navigate",
 			"--op", "ls",
+			"--context", "{bucket: bucket}",
 			"--count-only=true",
 			"--cursor", "cursor",
 			"--filter", "{functionName: functionName, search: search, since: '2019-12-27T18:11:19.117Z', type: type}",
@@ -42,6 +43,7 @@ func TestFsNavigate(t *testing.T) {
 			"--api-key", "string",
 			"fs", "navigate",
 			"--op", "ls",
+			"--context.bucket", "bucket",
 			"--count-only=true",
 			"--cursor", "cursor",
 			"--filter.function-name", "functionName",
@@ -66,6 +68,8 @@ func TestFsNavigate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"op: ls\n" +
+			"context:\n" +
+			"  bucket: bucket\n" +
 			"countOnly: true\n" +
 			"cursor: cursor\n" +
 			"filter:\n" +
