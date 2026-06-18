@@ -242,6 +242,16 @@ func init() {
 				},
 			},
 			{
+				Name:     "eval:score",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&evalScoreCreate,
+					&evalScoreRetrieve,
+					&evalScoreCancel,
+				},
+			},
+			{
 				Name:     "fs",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -282,6 +292,85 @@ func init() {
 					&viewsDelete,
 					&viewsGenerateAggregationData,
 					&viewsGenerateTableData,
+				},
+			},
+			{
+				Name:     "buckets",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&bucketsCreate,
+					&bucketsRetrieve,
+					&bucketsUpdate,
+					&bucketsList,
+					&bucketsDelete,
+				},
+			},
+			{
+				Name:     "entities",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&entitiesUpdate,
+					&entitiesBulkCreate,
+					&entitiesBulkValidate,
+					&entitiesRetrieveRelations,
+					&entitiesRetrieveSeedStatus,
+				},
+			},
+			{
+				Name:     "entities:synonyms",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&entitiesSynonymsAdd,
+					&entitiesSynonymsRemove,
+				},
+			},
+			{
+				Name:     "entity-types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&entityTypesCreate,
+					&entityTypesRetrieve,
+					&entityTypesUpdate,
+					&entityTypesList,
+					&entityTypesDelete,
+				},
+			},
+			{
+				Name:     "entity-types:reviewers",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&entityTypesReviewersList,
+					&entityTypesReviewersAssign,
+					&entityTypesReviewersRemove,
+				},
+			},
+			{
+				Name:     "knowledge-graph",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&knowledgeGraphRetrieve,
+				},
+			},
+			{
+				Name:     "review-queue",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&reviewQueueList,
+				},
+			},
+			{
+				Name:     "users",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&usersListReviewerAssignments,
 				},
 			},
 			{
