@@ -341,6 +341,11 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 			QueryPath: "wait",
 		},
 		&requestflag.Flag[string]{
+			Name:     "bucket",
+			Usage:    "Optional bucket NAME that entities extracted by the workflow's parse\nfunction(s) land in. Resolution precedence: this call-level bucket >\nthe parse function's configured `defaultBucket` > the account+environment\ndefault bucket. A non-existent bucket name returns 400, but only when the\nworkflow contains a parse function; on a parse-free workflow it is ignored.",
+			BodyPath: "bucket",
+		},
+		&requestflag.Flag[string]{
 			Name:     "call-reference-id",
 			Usage:    "Your reference ID for tracking this call.",
 			BodyPath: "callReferenceID",

@@ -214,6 +214,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 	},
 	"parse-config": {
+		&requestflag.InnerFlag[string]{
+			Name:       "parse-config.default-bucket",
+			Usage:      "Optional bucket NAME that parse-extracted entities land in when no\ncall-level bucket is supplied. Lower precedence than a call-level bucket,\nhigher than the account+environment default.",
+			InnerField: "defaultBucket",
+		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "parse-config.extract-entities",
 			Usage:      "When true, extract named entities (people, organizations, products,\nstudies, identifiers, etc.) and the relationships between them, and\ndedupe by canonical name within the document. When false, only\n`sections[]` is extracted; `entities[]` and `relationships[]` come\nback empty in the parse output. Defaults to true.",
@@ -451,6 +456,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 	},
 	"parse-config": {
+		&requestflag.InnerFlag[string]{
+			Name:       "parse-config.default-bucket",
+			Usage:      "Optional bucket NAME that parse-extracted entities land in when no\ncall-level bucket is supplied. Lower precedence than a call-level bucket,\nhigher than the account+environment default.",
+			InnerField: "defaultBucket",
+		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "parse-config.extract-entities",
 			Usage:      "When true, extract named entities (people, organizations, products,\nstudies, identifiers, etc.) and the relationships between them, and\ndedupe by canonical name within the document. When false, only\n`sections[]` is extracted; `entities[]` and `relationships[]` come\nback empty in the parse output. Defaults to true.",
