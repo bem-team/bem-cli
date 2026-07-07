@@ -18,6 +18,8 @@ func TestKnowledgeGraphRetrieve(t *testing.T) {
 			"--bucket", "bucket",
 			"--cursor", "cursor",
 			"--limit", "0",
+			"--max-depth", "0",
+			"--node-id", "nodeID",
 			"--search", "search",
 			"--since", "'2019-12-27T18:11:19.117Z'",
 			"--type", "string",

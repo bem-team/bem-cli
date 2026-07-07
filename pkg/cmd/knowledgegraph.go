@@ -34,6 +34,16 @@ var knowledgeGraphRetrieve = cli.Command{
 			Usage:     "Maximum number of edges per page (default 50, max 200).",
 			QueryPath: "limit",
 		},
+		&requestflag.Flag[int64]{
+			Name:      "max-depth",
+			Usage:     "Maximum hops from the center node. Only meaningful with `nodeID`. Defaults\nto 2 and is clamped down to a system maximum (5).",
+			QueryPath: "maxDepth",
+		},
+		&requestflag.Flag[string]{
+			Name:      "node-id",
+			Usage:     "Center the graph on this entity (`ent_...`) and only return the subgraph\nwithin `maxDepth` hops of it; every node then carries its `depth` (hops\nfrom the center, center = 0). Omit for the uncentered whole-graph view.\n`rootNodeID` and `focusNodeID` are accepted as aliases.",
+			QueryPath: "nodeID",
+		},
 		&requestflag.Flag[string]{
 			Name:      "search",
 			Usage:     "Case-insensitive substring match on canonical names. Both endpoints of an\nedge must match for the edge (and its nodes) to be returned.",
