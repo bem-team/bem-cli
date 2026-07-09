@@ -25,6 +25,11 @@ var fsNavigate = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "op",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "context",
+			Usage:    "Request-scoping concerns that are orthogonal to the op itself. Carried on a\n`context` object so future scoping hints (e.g. as-of timestamps, read\nconsistency) can slot in without reshaping the op-specific fields.",
+			BodyPath: "context",
+		},
 		&requestflag.Flag[bool]{
 			Name:     "count-only",
 			Usage:    "When true, return only the hit count without snippet payload.\nCheaper than fetching matches when the agent only wants a yes/no.",
@@ -89,6 +94,13 @@ var fsNavigate = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleFsNavigate,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
+	"context": {
+		&requestflag.InnerFlag[string]{
+			Name:       "context.bucket",
+			Usage:      "Bucket KSUID (prefix `bkt_`) to scope the request to — a named partition\nof the knowledge graph within the caller's account+environment.\n\n**Optional.** Omitting it (or passing an empty value) leaves the request\nUNSCOPED: memory-level reads (`find` / `open` / `xref`) return entities\nacross every bucket in the account+environment, so pre-bucket callers\nkeep their original all-entities behavior unchanged. (Writes are\ndifferent: a parse call with no bucket targets the account default\nbucket.) When a bucket IS supplied, memory-level ops return only entities\nin that bucket; doc-level ops (`ls`/`cat`/`head`/`stat`/`grep`) are\nunaffected either way — documents are not bucket-partitioned. A bucket\nthat does not belong to the caller's account+environment is rejected.",
+			InnerField: "bucket",
+		},
+	},
 	"filter": {
 		&requestflag.InnerFlag[string]{
 			Name:       "filter.function-name",

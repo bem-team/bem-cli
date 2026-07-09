@@ -144,6 +144,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Per-version configuration for a Parse function.\n\nParse renders document pages (PDF, image) via vision LLM and emits\nstructured JSON. The two toggles below independently control entity\nextraction (a per-call output concern) and cross-document memory\nlinking (an environment-wide concern).",
 			BodyPath: "parseConfig",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "render-config",
+			Usage:    "Request-side render configuration. Carries the template document as\nbase64-encoded `.docx` bytes: the server validates them, stores the template,\nand derives the placeholder/style-id contract at create/update time, so\nclients never submit `placeholders` or `styleIds`. The response shape\n(`RenderConfig`) returns the derived contract.",
+			BodyPath: "renderConfig",
+		},
 	},
 	Action:          handleFunctionsCreate,
 	HideHelpCommand: true,
@@ -214,6 +219,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 	},
 	"parse-config": {
+		&requestflag.InnerFlag[string]{
+			Name:       "parse-config.default-bucket",
+			Usage:      "Optional bucket NAME that parse-extracted entities land in when no\ncall-level bucket is supplied. Lower precedence than a call-level bucket,\nhigher than the account+environment default.",
+			InnerField: "defaultBucket",
+		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "parse-config.extract-entities",
 			Usage:      "When true, extract named entities (people, organizations, products,\nstudies, identifiers, etc.) and the relationships between them, and\ndedupe by canonical name within the document. When false, only\n`sections[]` is extracted; `entities[]` and `relationships[]` come\nback empty in the parse output. Defaults to true.",
@@ -228,6 +238,12 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:       "parse-config.schema",
 			Usage:      "Optional JSONSchema. When provided, each chunk performs schema-guided\nextraction. When absent, chunks perform open-ended discovery and\nreturn sections, entities, and relationships per the discovery\nschema.",
 			InnerField: "schema",
+		},
+	},
+	"render-config": {
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "render-config.template",
+			InnerField: "template",
 		},
 	},
 })
@@ -381,6 +397,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Per-version configuration for a Parse function.\n\nParse renders document pages (PDF, image) via vision LLM and emits\nstructured JSON. The two toggles below independently control entity\nextraction (a per-call output concern) and cross-document memory\nlinking (an environment-wide concern).",
 			BodyPath: "parseConfig",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "render-config",
+			Usage:    "Request-side render configuration. Carries the template document as\nbase64-encoded `.docx` bytes: the server validates them, stores the template,\nand derives the placeholder/style-id contract at create/update time, so\nclients never submit `placeholders` or `styleIds`. The response shape\n(`RenderConfig`) returns the derived contract.",
+			BodyPath: "renderConfig",
+		},
 	},
 	Action:          handleFunctionsUpdate,
 	HideHelpCommand: true,
@@ -451,6 +472,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 	},
 	"parse-config": {
+		&requestflag.InnerFlag[string]{
+			Name:       "parse-config.default-bucket",
+			Usage:      "Optional bucket NAME that parse-extracted entities land in when no\ncall-level bucket is supplied. Lower precedence than a call-level bucket,\nhigher than the account+environment default.",
+			InnerField: "defaultBucket",
+		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "parse-config.extract-entities",
 			Usage:      "When true, extract named entities (people, organizations, products,\nstudies, identifiers, etc.) and the relationships between them, and\ndedupe by canonical name within the document. When false, only\n`sections[]` is extracted; `entities[]` and `relationships[]` come\nback empty in the parse output. Defaults to true.",
@@ -465,6 +491,12 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Name:       "parse-config.schema",
 			Usage:      "Optional JSONSchema. When provided, each chunk performs schema-guided\nextraction. When absent, chunks perform open-ended discovery and\nreturn sections, entities, and relationships per the discovery\nschema.",
 			InnerField: "schema",
+		},
+	},
+	"render-config": {
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "render-config.template",
+			InnerField: "template",
 		},
 	},
 })
