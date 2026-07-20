@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.21.0 (2026-07-20)
+
+Full Changelog: [v0.20.0...v0.21.0](https://github.com/bem-team/bem-cli/compare/v0.20.0...v0.21.0)
+
+### Features
+
+* **api:** api update ([e6e3480](https://github.com/bem-team/bem-cli/commit/e6e348082b0a2ba5993f837602f5c1fd31c94b27))
+* **api:** api update ([63ea9c7](https://github.com/bem-team/bem-cli/commit/63ea9c74b1ec1d259f42a4504c66ebfc1663548a))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([302774c](https://github.com/bem-team/bem-cli/commit/302774cf0c449d5a3425fbccff53a9ffbede13f1))
+
 ## 0.20.0 (2026-07-09)
 
 Full Changelog: [v0.19.0...v0.20.0](https://github.com/bem-team/bem-cli/compare/v0.19.0...v0.20.0)
