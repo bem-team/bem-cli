@@ -76,6 +76,11 @@ var functionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Description of classifier. Can be used to provide additional context on classifier's purpose and expected inputs.",
 			BodyPath: "description",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "native-visual-input",
+			Usage:    "When true, image and PDF inputs are sent directly to the model for\nrouting instead of being OCR'd to text first. Defaults to true for new\nclassify functions and false for the legacy route type.",
+			BodyPath: "nativeVisualInput",
+		},
 		&requestflag.Flag[string]{
 			Name:     "destination-type",
 			Usage:    "Destination type for a Send function.",
@@ -328,6 +333,11 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "description",
 			Usage:    "Description of classifier. Can be used to provide additional context on classifier's purpose and expected inputs.",
 			BodyPath: "description",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "native-visual-input",
+			Usage:    "When true, image and PDF inputs are sent directly to the model for\nrouting instead of being OCR'd to text first. Defaults to true for new\nclassify functions and false for the legacy route type.",
+			BodyPath: "nativeVisualInput",
 		},
 		&requestflag.Flag[string]{
 			Name:     "destination-type",
