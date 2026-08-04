@@ -17,9 +17,10 @@ func TestEvalScoreCreate(t *testing.T) {
 			"--api-key", "string",
 			"eval:score", "create",
 			"--function-name", "functionName",
-			"--pair", "{expected: {}, input: {inputContent: inputContent, inputType: csv}}",
+			"--dataset-id", "datasetID",
 			"--function-version-num", "0",
 			"--match-config", "{arrayMatch: by-index, fuzzyThreshold: 0, ignorePaths: [string], numericTolerance: 0, stringMatch: exact}",
+			"--pair", "{expected: {}, input: {inputContent: inputContent, inputType: csv}}",
 		)
 	})
 
@@ -33,14 +34,15 @@ func TestEvalScoreCreate(t *testing.T) {
 			"--api-key", "string",
 			"eval:score", "create",
 			"--function-name", "functionName",
-			"--pair.expected", "{}",
-			"--pair.input", "{inputContent: inputContent, inputType: csv}",
+			"--dataset-id", "datasetID",
 			"--function-version-num", "0",
 			"--match-config.array-match", "by-index",
 			"--match-config.fuzzy-threshold", "0",
 			"--match-config.ignore-paths", "[string]",
 			"--match-config.numeric-tolerance", "0",
 			"--match-config.string-match", "exact",
+			"--pair.expected", "{}",
+			"--pair.input", "{inputContent: inputContent, inputType: csv}",
 		)
 	})
 
@@ -48,11 +50,7 @@ func TestEvalScoreCreate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"functionName: functionName\n" +
-			"pairs:\n" +
-			"  - expected: {}\n" +
-			"    input:\n" +
-			"      inputContent: inputContent\n" +
-			"      inputType: csv\n" +
+			"datasetID: datasetID\n" +
 			"functionVersionNum: 0\n" +
 			"matchConfig:\n" +
 			"  arrayMatch: by-index\n" +
@@ -60,7 +58,12 @@ func TestEvalScoreCreate(t *testing.T) {
 			"  ignorePaths:\n" +
 			"    - string\n" +
 			"  numericTolerance: 0\n" +
-			"  stringMatch: exact\n")
+			"  stringMatch: exact\n" +
+			"pairs:\n" +
+			"  - expected: {}\n" +
+			"    input:\n" +
+			"      inputContent: inputContent\n" +
+			"      inputType: csv\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
