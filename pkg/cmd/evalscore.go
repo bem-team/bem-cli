@@ -35,11 +35,6 @@ var evalScoreCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Optional version number to score against. P0: only the function's\ncurrent version is accepted; passing a different version returns 422.",
 			BodyPath: "functionVersionNum",
 		},
-		&requestflag.Flag[map[string]any]{
-			Name:     "match-config",
-			Usage:    "Comparator configuration. All fields optional; conservative defaults.",
-			BodyPath: "matchConfig",
-		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "pair",
 			Usage:    "Inline `(input, expected)` pairs to score, up to 1000 per request.\nMutually exclusive with `datasetID`; provide exactly one.",
@@ -49,33 +44,6 @@ var evalScoreCreate = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleEvalScoreCreate,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
-	"match-config": {
-		&requestflag.InnerFlag[string]{
-			Name:       "match-config.array-match",
-			Usage:      "P0 supports only `by-index`.",
-			InnerField: "arrayMatch",
-		},
-		&requestflag.InnerFlag[float64]{
-			Name:       "match-config.fuzzy-threshold",
-			Usage:      "Levenshtein-ratio threshold used when `stringMatch == \"fuzzy\"`.\nRange `[0, 1]`. Default `0.85`.",
-			InnerField: "fuzzyThreshold",
-		},
-		&requestflag.InnerFlag[[]string]{
-			Name:       "match-config.ignore-paths",
-			Usage:      "JSON Pointer paths to skip during comparison. The asterisk character\nmatches arbitrary object keys / array indices.\n\nExample values: /metadata, /lineItems with asterisk segment, etc.",
-			InnerField: "ignorePaths",
-		},
-		&requestflag.InnerFlag[float64]{
-			Name:       "match-config.numeric-tolerance",
-			Usage:      "Relative tolerance for numeric fields. `0` (default) means exact\nequality; `0.01` means ±1%.",
-			InnerField: "numericTolerance",
-		},
-		&requestflag.InnerFlag[string]{
-			Name:       "match-config.string-match",
-			Usage:      "`exact` (default) or `fuzzy`.",
-			InnerField: "stringMatch",
-		},
-	},
 	"pair": {
 		&requestflag.InnerFlag[any]{
 			Name:       "pair.expected",
