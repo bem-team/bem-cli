@@ -19,7 +19,6 @@ func TestEvalScoreCreate(t *testing.T) {
 			"--function-name", "functionName",
 			"--dataset-id", "datasetID",
 			"--function-version-num", "0",
-			"--match-config", "{arrayMatch: by-index, fuzzyThreshold: 0, ignorePaths: [string], numericTolerance: 0, stringMatch: exact}",
 			"--pair", "{expected: {}, input: {inputContent: inputContent, inputType: csv}}",
 		)
 	})
@@ -36,11 +35,6 @@ func TestEvalScoreCreate(t *testing.T) {
 			"--function-name", "functionName",
 			"--dataset-id", "datasetID",
 			"--function-version-num", "0",
-			"--match-config.array-match", "by-index",
-			"--match-config.fuzzy-threshold", "0",
-			"--match-config.ignore-paths", "[string]",
-			"--match-config.numeric-tolerance", "0",
-			"--match-config.string-match", "exact",
 			"--pair.expected", "{}",
 			"--pair.input", "{inputContent: inputContent, inputType: csv}",
 		)
@@ -52,13 +46,6 @@ func TestEvalScoreCreate(t *testing.T) {
 			"functionName: functionName\n" +
 			"datasetID: datasetID\n" +
 			"functionVersionNum: 0\n" +
-			"matchConfig:\n" +
-			"  arrayMatch: by-index\n" +
-			"  fuzzyThreshold: 0\n" +
-			"  ignorePaths:\n" +
-			"    - string\n" +
-			"  numericTolerance: 0\n" +
-			"  stringMatch: exact\n" +
 			"pairs:\n" +
 			"  - expected: {}\n" +
 			"    input:\n" +
