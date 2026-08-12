@@ -25,21 +25,20 @@ var evalScoreCreate = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "functionName",
 		},
-		&requestflag.Flag[[]map[string]any]{
-			Name:     "pair",
-			Usage:    "Up to 1000 pairs per request.",
-			Required: true,
-			BodyPath: "pairs",
+		&requestflag.Flag[string]{
+			Name:     "dataset-id",
+			Usage:    "A saved Golden Data Set (`gds_…`) to score against. Mutually exclusive with\n`pairs`; provide exactly one. Its input / corrected / schema columns are resolved\nby column role. When it carries a `schema`-role column, scoring types each row\nagainst that ground-truth schema instead of the function's own schema — so results\nhold up as functions/schemas evolve.",
+			BodyPath: "datasetID",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "function-version-num",
 			Usage:    "Optional version number to score against. P0: only the function's\ncurrent version is accepted; passing a different version returns 422.",
 			BodyPath: "functionVersionNum",
 		},
-		&requestflag.Flag[map[string]any]{
-			Name:     "match-config",
-			Usage:    "Comparator configuration. All fields optional; conservative defaults.",
-			BodyPath: "matchConfig",
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "pair",
+			Usage:    "Inline `(input, expected)` pairs to score, up to 1000 per request.\nMutually exclusive with `datasetID`; provide exactly one.",
+			BodyPath: "pairs",
 		},
 	},
 	Action:          handleEvalScoreCreate,
@@ -55,33 +54,6 @@ var evalScoreCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:       "pair.input",
 			Usage:      "A single file input with base64-encoded content.\n\nWhen using the Bem CLI, use `@path/to/file` in the `inputContent` field to\nautomatically read and base64-encode the file:\n`--input.single-file '{\"inputContent\": \"@file.pdf\", \"inputType\": \"pdf\"}' --wait`",
 			InnerField: "input",
-		},
-	},
-	"match-config": {
-		&requestflag.InnerFlag[string]{
-			Name:       "match-config.array-match",
-			Usage:      "P0 supports only `by-index`.",
-			InnerField: "arrayMatch",
-		},
-		&requestflag.InnerFlag[float64]{
-			Name:       "match-config.fuzzy-threshold",
-			Usage:      "Levenshtein-ratio threshold used when `stringMatch == \"fuzzy\"`.\nRange `[0, 1]`. Default `0.85`.",
-			InnerField: "fuzzyThreshold",
-		},
-		&requestflag.InnerFlag[[]string]{
-			Name:       "match-config.ignore-paths",
-			Usage:      "JSON Pointer paths to skip during comparison. The asterisk character\nmatches arbitrary object keys / array indices.\n\nExample values: /metadata, /lineItems with asterisk segment, etc.",
-			InnerField: "ignorePaths",
-		},
-		&requestflag.InnerFlag[float64]{
-			Name:       "match-config.numeric-tolerance",
-			Usage:      "Relative tolerance for numeric fields. `0` (default) means exact\nequality; `0.01` means ±1%.",
-			InnerField: "numericTolerance",
-		},
-		&requestflag.InnerFlag[string]{
-			Name:       "match-config.string-match",
-			Usage:      "`exact` (default) or `fuzzy`.",
-			InnerField: "stringMatch",
 		},
 	},
 })
