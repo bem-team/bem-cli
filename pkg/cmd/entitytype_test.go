@@ -78,22 +78,6 @@ func TestEntityTypesUpdate(t *testing.T) {
 	})
 }
 
-func TestEntityTypesList(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"entity-types", "list",
-			"--ending-before", "endingBefore",
-			"--limit", "0",
-			"--name", "name",
-			"--parent-type-id", "parentTypeId",
-			"--starting-after", "startingAfter",
-		)
-	})
-}
-
 func TestEntityTypesDelete(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
