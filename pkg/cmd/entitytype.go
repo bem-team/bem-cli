@@ -106,6 +106,11 @@ var entityTypesList = cli.Command{
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
+			Name:      "name",
+			Usage:     "Case-insensitive substring match on the entity type name.",
+			QueryPath: "name",
+		},
+		&requestflag.Flag[string]{
 			Name:      "parent-type-id",
 			Usage:     "Filter to the direct children of this parent type (`ety_...`).",
 			QueryPath: "parentTypeId",

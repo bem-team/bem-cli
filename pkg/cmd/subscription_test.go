@@ -112,7 +112,6 @@ func TestSubscriptionsList(t *testing.T) {
 			"--ending-before", "endingBefore",
 			"--function-name", "string",
 			"--limit", "1",
-			"--sort-order", "asc",
 			"--starting-after", "startingAfter",
 		)
 	})

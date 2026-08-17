@@ -263,6 +263,11 @@ var functionsRetrieve = cli.Command{
 			Required:  true,
 			PathParam: "functionName",
 		},
+		&requestflag.Flag[bool]{
+			Name:      "include-extra-settings",
+			Usage:     "Populate the function's `extraConfig` block. Omitted or `false` by\ndefault, in which case `extraConfig` is absent from the response.",
+			QueryPath: "includeExtraSettings",
+		},
 	},
 	Action:          handleFunctionsRetrieve,
 	HideHelpCommand: true,
@@ -532,6 +537,11 @@ var functionsList = cli.Command{
 			Name:      "function-name",
 			QueryPath: "functionNames",
 		},
+		&requestflag.Flag[bool]{
+			Name:      "include-extra-settings",
+			Usage:     "Populate each function's `extraConfig` block. Omitted or `false` by\ndefault, in which case `extraConfig` is absent from the response.",
+			QueryPath: "includeExtraSettings",
+		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
 			Default:   50,
@@ -560,8 +570,18 @@ var functionsList = cli.Command{
 			QueryPath: "workflowIDs",
 		},
 		&requestflag.Flag[[]string]{
+			Name:      "workflow-id-version-num",
+			Usage:     "Return only functions referenced by a specific workflow version. Each\nentry is `<workflowID>.<versionNum>` — for example\n`wf_2c9AXIj48cUYJtCuv1gsQtHGDzK.3`.",
+			QueryPath: "workflowIDVersionNums",
+		},
+		&requestflag.Flag[[]string]{
 			Name:      "workflow-name",
 			QueryPath: "workflowNames",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "workflow-name-version-num",
+			Usage:     "Return only functions referenced by a specific workflow version, keyed\nby workflow name. Each entry is `<workflowName>.<versionNum>` — for\nexample `invoice-pipeline.3`.",
+			QueryPath: "workflowNameVersionNums",
 		},
 		&requestflag.Flag[int64]{
 			Name:  "max-items",
@@ -692,6 +712,11 @@ var functionsGetMetrics = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
+			Name:      "display-name",
+			Usage:     "Case-insensitive substring match on the function display name.",
+			QueryPath: "displayName",
+		},
+		&requestflag.Flag[string]{
 			Name:      "ending-before",
 			Usage:     "Cursor — a `functionID` defining your place in the list.",
 			QueryPath: "endingBefore",
@@ -721,8 +746,33 @@ var functionsGetMetrics = cli.Command{
 			QueryPath: "startingAfter",
 		},
 		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Returns metrics for functions tagged with any of the supplied tags.",
+			QueryPath: "tags",
+		},
+		&requestflag.Flag[[]string]{
 			Name:      "type",
 			QueryPath: "types",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "workflow-id",
+			Usage:     "Returns metrics only for functions referenced by the named workflows.",
+			QueryPath: "workflowIDs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "workflow-id-version-num",
+			Usage:     "Narrow the workflow filter to a specific workflow version. Each entry\nis `<workflowID>.<versionNum>`.",
+			QueryPath: "workflowIDVersionNums",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "workflow-name",
+			Usage:     "Returns metrics only for functions referenced by the named workflows.",
+			QueryPath: "workflowNames",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "workflow-name-version-num",
+			Usage:     "Narrow the workflow filter to a specific workflow version, keyed by\nworkflow name. Each entry is `<workflowName>.<versionNum>`.",
+			QueryPath: "workflowNameVersionNums",
 		},
 	},
 	Action:          handleFunctionsGetMetrics,
@@ -792,9 +842,16 @@ func handleFunctionsRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
+	params := bem.FunctionGetParams{}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Functions.Get(ctx, cmd.Value("function-name").(string), options...)
+	_, err = client.Functions.Get(
+		ctx,
+		cmd.Value("function-name").(string),
+		params,
+		options...,
+	)
 	if err != nil {
 		return err
 	}

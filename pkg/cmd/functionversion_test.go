@@ -17,6 +17,7 @@ func TestFunctionsVersionsRetrieve(t *testing.T) {
 			"functions:versions", "retrieve",
 			"--function-name", "functionName",
 			"--version-num", "0",
+			"--include-extra-settings=true",
 		)
 	})
 }
@@ -29,6 +30,10 @@ func TestFunctionsVersionsList(t *testing.T) {
 			"--api-key", "string",
 			"functions:versions", "list",
 			"--function-name", "functionName",
+			"--ending-before", "0",
+			"--limit", "1",
+			"--sort-order", "asc",
+			"--starting-after", "0",
 		)
 	})
 }

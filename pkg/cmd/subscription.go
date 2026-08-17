@@ -173,12 +173,6 @@ var subscriptionsList = cli.Command{
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
-			Name:      "sort-order",
-			Usage:     "Specifies sorting behavior. The two options are `asc` and `desc` to sort ascending and descending respectively, with default sort being ascending. Paging works in both directions.",
-			Default:   "asc",
-			QueryPath: "sortOrder",
-		},
-		&requestflag.Flag[string]{
 			Name:      "starting-after",
 			Usage:     "A cursor to use in pagination. `startingAfter` is a task ID that defines your place in the list. For example, if you make a list request and receive 50 objects, ending with `sub_2c9AXIj48cUYJtCuv1gsQtHGDzK`, your subsequent call can include `startingAfter=sub_2c9AXIj48cUYJtCuv1gsQtHGDzK` to fetch the next page of the list.",
 			QueryPath: "startingAfter",

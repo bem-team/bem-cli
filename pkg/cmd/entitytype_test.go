@@ -87,6 +87,7 @@ func TestEntityTypesList(t *testing.T) {
 			"entity-types", "list",
 			"--ending-before", "endingBefore",
 			"--limit", "0",
+			"--name", "name",
 			"--parent-type-id", "parentTypeId",
 			"--starting-after", "startingAfter",
 		)
