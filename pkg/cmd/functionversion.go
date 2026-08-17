@@ -29,6 +29,11 @@ var functionsVersionsRetrieve = cli.Command{
 			Required:  true,
 			PathParam: "versionNum",
 		},
+		&requestflag.Flag[bool]{
+			Name:      "include-extra-settings",
+			Usage:     "Populate the version's `extraConfig` block. Omitted or `false` by\ndefault, in which case `extraConfig` is absent from the response.",
+			QueryPath: "includeExtraSettings",
+		},
 	},
 	Action:          handleFunctionsVersionsRetrieve,
 	HideHelpCommand: true,
@@ -43,6 +48,25 @@ var functionsVersionsList = cli.Command{
 			Name:      "function-name",
 			Required:  true,
 			PathParam: "functionName",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "ending-before",
+			QueryPath: "endingBefore",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Default:   50,
+			QueryPath: "limit",
+		},
+		&requestflag.Flag[string]{
+			Name:      "sort-order",
+			Usage:     `Allowed values: "asc", "desc".`,
+			Default:   "asc",
+			QueryPath: "sortOrder",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "starting-after",
+			QueryPath: "startingAfter",
 		},
 	},
 	Action:          handleFunctionsVersionsList,
@@ -122,9 +146,16 @@ func handleFunctionsVersionsList(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
+	params := bem.FunctionVersionListParams{}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Functions.Versions.List(ctx, cmd.Value("function-name").(string), options...)
+	_, err = client.Functions.Versions.List(
+		ctx,
+		cmd.Value("function-name").(string),
+		params,
+		options...,
+	)
 	if err != nil {
 		return err
 	}

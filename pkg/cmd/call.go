@@ -38,9 +38,24 @@ var callsList = cli.Command{
 			Name:      "call-id",
 			QueryPath: "callIDs",
 		},
+		&requestflag.Flag[[]string]{
+			Name:      "call-type",
+			Usage:     "Filter by call type. Omit to return every call regardless of type.",
+			QueryPath: "callTypes",
+		},
 		&requestflag.Flag[string]{
 			Name:      "ending-before",
 			QueryPath: "endingBefore",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "function-id",
+			Usage:     "Filter by function API ID. Only matches function calls — workflow calls\ncarry no function reference of their own.",
+			QueryPath: "functionIDs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "function-name",
+			Usage:     "Filter by function name. Only matches function calls.",
+			QueryPath: "functionNames",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
