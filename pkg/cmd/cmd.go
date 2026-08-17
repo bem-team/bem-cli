@@ -335,18 +335,7 @@ func init() {
 					&entityTypesCreate,
 					&entityTypesRetrieve,
 					&entityTypesUpdate,
-					&entityTypesList,
 					&entityTypesDelete,
-				},
-			},
-			{
-				Name:     "entity-types:reviewers",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&entityTypesReviewersList,
-					&entityTypesReviewersAssign,
-					&entityTypesReviewersRemove,
 				},
 			},
 			{
@@ -355,22 +344,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&knowledgeGraphRetrieve,
-				},
-			},
-			{
-				Name:     "review-queue",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&reviewQueueList,
-				},
-			},
-			{
-				Name:     "users",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&usersListReviewerAssignments,
 				},
 			},
 			{

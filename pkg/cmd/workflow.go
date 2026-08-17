@@ -265,8 +265,18 @@ var workflowsList = cli.Command{
 			QueryPath: "functionIDs",
 		},
 		&requestflag.Flag[[]string]{
+			Name:      "function-id-version-num",
+			Usage:     "Return only workflows with a node pinned to a specific function\nversion. Each entry is `<functionID>.<versionNum>` — for example\n`fn_2c9AXIj48cUYJtCuv1gsQtHGDzK.4`.",
+			QueryPath: "functionIDVersionNums",
+		},
+		&requestflag.Flag[[]string]{
 			Name:      "function-name",
 			QueryPath: "functionNames",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "function-name-version-num",
+			Usage:     "Return only workflows with a node pinned to a specific function\nversion, keyed by function name. Each entry is\n`<functionName>.<versionNum>` — for example `invoice-extract.4`.",
+			QueryPath: "functionNameVersionNums",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
@@ -624,7 +634,24 @@ func handleWorkflowsDelete(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	return client.Workflows.Delete(ctx, cmd.Value("workflow-name").(string), options...)
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Workflows.Delete(ctx, cmd.Value("workflow-name").(string), options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workflows delete",
+		Transform:      transform,
+	})
 }
 
 func handleWorkflowsCall(ctx context.Context, cmd *cli.Command) error {

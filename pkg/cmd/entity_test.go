@@ -17,6 +17,7 @@ func TestEntitiesUpdate(t *testing.T) {
 			"--api-key", "string",
 			"entities", "update",
 			"--id", "id",
+			"--bucket", "bucket",
 			"--add-synonym", "string",
 			"--assigned-type-id", "assignedTypeID",
 			"--canonical", "canonical",
@@ -42,6 +43,7 @@ func TestEntitiesUpdate(t *testing.T) {
 			"--api-key", "string",
 			"entities", "update",
 			"--id", "id",
+			"--bucket", "bucket",
 		)
 	})
 }
@@ -110,6 +112,7 @@ func TestEntitiesBulkValidate(t *testing.T) {
 			"--entity-id", "ent_2abc",
 			"--entity-id", "ent_2def",
 			"--status", "approved",
+			"--bucket", "bucket",
 		)
 	})
 
@@ -124,6 +127,7 @@ func TestEntitiesBulkValidate(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"entities", "bulk-validate",
+			"--bucket", "bucket",
 		)
 	})
 }

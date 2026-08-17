@@ -24,6 +24,11 @@ var entitiesUpdate = cli.Command{
 			Required:  true,
 			PathParam: "id",
 		},
+		&requestflag.Flag[string]{
+			Name:      "bucket",
+			Usage:     "Optional bucket public ID (`bkt_...`) to scope the lookup to. Omit for the default bucket.",
+			QueryPath: "bucket",
+		},
 		&requestflag.Flag[[]string]{
 			Name:     "add-synonym",
 			Usage:    "Surface forms to attach as `customer_defined` synonyms.",
@@ -129,6 +134,11 @@ var entitiesBulkValidate = cli.Command{
 			Usage:    "Terminal status to apply to every entity.",
 			Required: true,
 			BodyPath: "status",
+		},
+		&requestflag.Flag[string]{
+			Name:      "bucket",
+			Usage:     "Optional bucket public ID (`bkt_...`) to scope the lookup to. Omit for the default bucket.",
+			QueryPath: "bucket",
 		},
 	},
 	Action:          handleEntitiesBulkValidate,

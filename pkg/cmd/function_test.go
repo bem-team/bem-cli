@@ -56,6 +56,7 @@ func TestFunctionsRetrieve(t *testing.T) {
 			"--api-key", "string",
 			"functions", "retrieve",
 			"--function-name", "functionName",
+			"--include-extra-settings=true",
 		)
 	})
 }
@@ -114,13 +115,16 @@ func TestFunctionsList(t *testing.T) {
 			"--ending-before", "endingBefore",
 			"--function-id", "string",
 			"--function-name", "string",
+			"--include-extra-settings=true",
 			"--limit", "1",
 			"--sort-order", "asc",
 			"--starting-after", "startingAfter",
 			"--tag", "string",
 			"--type", "transform",
 			"--workflow-id", "string",
+			"--workflow-id-version-num", "string",
 			"--workflow-name", "string",
+			"--workflow-name-version-num", "string",
 		)
 	})
 }
@@ -215,13 +219,19 @@ func TestFunctionsGetMetrics(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"functions", "get-metrics",
+			"--display-name", "displayName",
 			"--ending-before", "endingBefore",
 			"--function-id", "string",
 			"--function-name", "string",
 			"--limit", "1",
 			"--sort-order", "asc",
 			"--starting-after", "startingAfter",
+			"--tag", "string",
 			"--type", "transform",
+			"--workflow-id", "string",
+			"--workflow-id-version-num", "string",
+			"--workflow-name", "string",
+			"--workflow-name-version-num", "string",
 		)
 	})
 }
