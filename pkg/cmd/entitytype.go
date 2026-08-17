@@ -90,41 +90,6 @@ var entityTypesUpdate = cli.Command{
 	HideHelpCommand: true,
 }
 
-var entityTypesList = cli.Command{
-	Name:    "list",
-	Usage:   "List Entity Types",
-	Suggest: true,
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:      "ending-before",
-			Usage:     "Cursor: return types whose `typeID` sorts before this value.",
-			QueryPath: "endingBefore",
-		},
-		&requestflag.Flag[int64]{
-			Name:      "limit",
-			Usage:     "Maximum number of entity types to return (default 50, max 200).",
-			QueryPath: "limit",
-		},
-		&requestflag.Flag[string]{
-			Name:      "name",
-			Usage:     "Case-insensitive substring match on the entity type name.",
-			QueryPath: "name",
-		},
-		&requestflag.Flag[string]{
-			Name:      "parent-type-id",
-			Usage:     "Filter to the direct children of this parent type (`ety_...`).",
-			QueryPath: "parentTypeId",
-		},
-		&requestflag.Flag[string]{
-			Name:      "starting-after",
-			Usage:     "Cursor: return types whose `typeID` sorts after this value.",
-			QueryPath: "startingAfter",
-		},
-	},
-	Action:          handleEntityTypesList,
-	HideHelpCommand: true,
-}
-
 var entityTypesDelete = cli.Command{
 	Name:    "delete",
 	Usage:   "Delete an Entity Type",
@@ -268,47 +233,6 @@ func handleEntityTypesUpdate(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "entity-types update",
-		Transform:      transform,
-	})
-}
-
-func handleEntityTypesList(ctx context.Context, cmd *cli.Command) error {
-	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	params := bem.EntityTypeListParams{}
-
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.EntityTypes.List(ctx, params, options...)
-	if err != nil {
-		return err
-	}
-
-	obj := gjson.ParseBytes(res)
-	format := cmd.Root().String("format")
-	explicitFormat := cmd.Root().IsSet("format")
-	transform := cmd.Root().String("transform")
-	return ShowJSON(obj, ShowJSONOpts{
-		ExplicitFormat: explicitFormat,
-		Format:         format,
-		RawOutput:      cmd.Root().Bool("raw-output"),
-		Title:          "entity-types list",
 		Transform:      transform,
 	})
 }

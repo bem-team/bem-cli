@@ -335,7 +335,6 @@ func init() {
 					&entityTypesCreate,
 					&entityTypesRetrieve,
 					&entityTypesUpdate,
-					&entityTypesList,
 					&entityTypesDelete,
 				},
 			},
