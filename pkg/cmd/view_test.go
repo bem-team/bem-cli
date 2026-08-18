@@ -183,6 +183,7 @@ func TestViewsList(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"views", "list",
+			"--max-items", "10",
 			"--ending-before", "endingBefore",
 			"--function-id", "string",
 			"--function-name", "string",

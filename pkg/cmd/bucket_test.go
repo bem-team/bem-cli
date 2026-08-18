@@ -79,6 +79,7 @@ func TestBucketsList(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"buckets", "list",
+			"--max-items", "10",
 			"--ending-before", "endingBefore",
 			"--limit", "0",
 			"--name-substring", "nameSubstring",

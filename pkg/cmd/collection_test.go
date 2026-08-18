@@ -37,6 +37,7 @@ func TestCollectionsList(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"collections", "list",
+			"--max-items", "10",
 			"--collection-name-search", "collectionNameSearch",
 			"--limit", "1",
 			"--page", "1",
