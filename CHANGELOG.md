@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.25.0](https://github.com/bem-team/bem-cli/compare/v0.24.0...v0.25.0) (2026-08-19)
+
+
+### Features
+
+* initial stlc build ([c3b7358](https://github.com/bem-team/bem-cli/commit/c3b7358566529b3fe595b7e1e39439b3e0ac8e1e))
+
 ## 0.24.0 (2026-08-17)
 
 Full Changelog: [v0.23.1...v0.24.0](https://github.com/bem-team/bem-cli/compare/v0.23.1...v0.24.0)
