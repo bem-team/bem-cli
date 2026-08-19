@@ -68,7 +68,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"functions", "update",
-			"--path-function-name", "functionName",
+			"--function-name", "functionName",
 			"--type", "extract",
 			"--display-name", "displayName",
 			"--enable-bounding-boxes=true",
@@ -98,7 +98,7 @@ func TestFunctionsUpdate(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"functions", "update",
-			"--path-function-name", "functionName",
+			"--function-name", "functionName",
 		)
 	})
 }

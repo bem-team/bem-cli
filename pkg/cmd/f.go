@@ -27,7 +27,7 @@ var fsNavigate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "context",
-			Usage:    "Request-scoping concerns that are orthogonal to the op itself. Carried on a\n`context` object so future scoping hints (e.g. as-of timestamps, read\nconsistency) can slot in without reshaping the op-specific fields.",
+			Usage:    "Request-scoping context (currently just the bucket scope). Optional;\nwhen omitted the request resolves against the account+environment default\nbucket. See `FSContext`.",
 			BodyPath: "context",
 		},
 		&requestflag.Flag[bool]{
@@ -42,7 +42,7 @@ var fsNavigate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "filter",
-			Usage:    "Filter options for `op=ls` and `op=find`.",
+			Usage:    "Narrows results for `op=ls` and `op=find`.",
 			BodyPath: "filter",
 		},
 		&requestflag.Flag[bool]{
@@ -72,7 +72,7 @@ var fsNavigate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "range",
-			Usage:    "Slice the parse output along page or section dimensions. Used with `op=cat`.",
+			Usage:    "Slices the parse output for `op=cat`.",
 			BodyPath: "range",
 		},
 		&requestflag.Flag[bool]{
