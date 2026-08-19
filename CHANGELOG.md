@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.0 (2026-08-19)
+
+Full Changelog: [v0.24.0...v0.25.0](https://github.com/bem-team/bem-cli/compare/v0.24.0...v0.25.0)
+
+### Features
+
+* **api:** api update ([9ed8db3](https://github.com/bem-team/bem-cli/commit/9ed8db31ccba10e41259b782c628d7ff0eba0e66))
+
 ## 0.24.0 (2026-08-17)
 
 Full Changelog: [v0.23.1...v0.24.0](https://github.com/bem-team/bem-cli/compare/v0.23.1...v0.24.0)
