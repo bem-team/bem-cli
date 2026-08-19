@@ -279,7 +279,7 @@ var functionsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:      "path-function-name",
+			Name:      "function-name",
 			Required:  true,
 			PathParam: "functionName",
 		},
@@ -872,8 +872,8 @@ func handleFunctionsRetrieve(ctx context.Context, cmd *cli.Command) error {
 func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
 	client := bem.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("path-function-name") && len(unusedArgs) > 0 {
-		cmd.Set("path-function-name", unusedArgs[0])
+	if !cmd.IsSet("function-name") && len(unusedArgs) > 0 {
+		cmd.Set("function-name", unusedArgs[0])
 		unusedArgs = unusedArgs[1:]
 	}
 	if len(unusedArgs) > 0 {
@@ -897,7 +897,7 @@ func handleFunctionsUpdate(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Functions.Update(
 		ctx,
-		cmd.Value("path-function-name").(string),
+		cmd.Value("function-name").(string),
 		params,
 		options...,
 	)

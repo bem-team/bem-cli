@@ -95,7 +95,7 @@ var workflowsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "connector.paragon",
-			Usage:      "Request-side config block for a Paragon connector. Fields absent on update are unchanged.",
+			Usage:      "Paragon configuration. Required on create for `type: \"paragon\"`.",
 			InnerField: "paragon",
 		},
 	},
@@ -203,7 +203,7 @@ var workflowsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "connector.paragon",
-			Usage:      "Request-side config block for a Paragon connector. Fields absent on update are unchanged.",
+			Usage:      "Paragon configuration. Required on create for `type: \"paragon\"`.",
 			InnerField: "paragon",
 		},
 	},
@@ -341,7 +341,7 @@ var workflowsCall = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "input",
-			Usage:    "Input file(s) for a call. Provide exactly one of `singleFile` or `batchFiles`.\n\nIn the CLI, use the nested flags `--input.single-file` or `--input.batch-files`\nwith `@path/to/file` for automatic file embedding:\n`--input.single-file '{\"inputContent\": \"@invoice.pdf\", \"inputType\": \"pdf\"}' --wait`",
+			Usage:    "Input file(s) for the workflow. Use nested flags to specify a single file or\nbatch:\n\nSingle file: `--input.single-file '{\"inputContent\": \"@file.pdf\", \"inputType\": \"pdf\"}'`\nBatch files: `--input.batch-files '{\"inputs\": [{\"inputContent\": \"@a.pdf\", \"inputType\": \"pdf\"}]}'`\n\nThe `@path/to/file` syntax reads and base64-encodes the file automatically.\nProvide exactly one of `singleFile` or `batchFiles`.",
 			Required: true,
 			BodyPath: "input",
 		},
