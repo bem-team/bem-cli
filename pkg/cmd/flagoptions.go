@@ -85,6 +85,45 @@ func isStdinPath(s string) bool {
 	return false
 }
 
+// --- Stdin ownership helpers. ---
+
+// referencesStdinFile keeps explicit file input from being consumed as piped configuration.
+// It mirrors embedFilesValue's file references without opening files or claiming stdin.
+func referencesStdinFile(value any) bool {
+	v := reflect.ValueOf(value)
+	switch v.Kind() {
+	case reflect.Map:
+		iter := v.MapRange()
+		for iter.Next() {
+			if referencesStdinFile(iter.Value().Interface()) {
+				return true
+			}
+		}
+	case reflect.Slice, reflect.Array:
+		for i := 0; i < v.Len(); i++ {
+			if referencesStdinFile(v.Index(i).Interface()) {
+				return true
+			}
+		}
+	case reflect.String:
+		s := v.String()
+		if v.Type() == reflect.TypeOf(FilePathValue("")) {
+			return isStdinPath(s)
+		}
+		if filename, ok := strings.CutPrefix(s, "@"); ok {
+			if withoutPrefix, ok := strings.CutPrefix(filename, "data://"); ok {
+				filename = withoutPrefix
+			} else if withoutPrefix, ok := strings.CutPrefix(filename, "file://"); ok {
+				filename = withoutPrefix
+			}
+			return isStdinPath(filename)
+		}
+	}
+	return false
+}
+
+// --- End stdin ownership helpers. ---
+
 func embedFiles(obj any, embedStyle FileEmbedStyle, stdin *onceStdinReader) (any, error) {
 	if obj == nil {
 		return obj, nil
@@ -338,8 +377,13 @@ func flagOptions(
 		applyDataAliases(cmd, bodyMap)
 	}
 
+	// Establish declared binary file paths before checking ownership; an ordinary "-"
+	// string is still a literal. Wrap again below for values from piped configuration.
+	wrapFileInputValues(cmd, &requestContents)
+	stdinOwnedByFile := referencesStdinFile(requestContents.Body) ||
+		referencesStdinFile(requestContents.Headers) || referencesStdinFile(requestContents.Queries)
 	stdinConsumedByPipe := false
-	if bodyType != ApplicationOctetStream && !ignoreStdin && isInputPiped() {
+	if bodyType != ApplicationOctetStream && !ignoreStdin && !stdinOwnedByFile && isInputPiped() {
 		pipeData, err := io.ReadAll(os.Stdin)
 		if err != nil {
 			return nil, err
